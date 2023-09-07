@@ -7,5 +7,4 @@ edition = "2021"
 
 [dependencies]
 gemini-engine = { path = "../gemini" }
-rand = "0.8.5"
 tobj = "4.0.0"

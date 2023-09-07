@@ -1,46 +1,60 @@
-use gemini_engine::elements::{view::ColChar, Vec2D, View};
+use gemini_engine::elements::{view::ColChar, View};
 use gemini_engine::elements3d::{DisplayMode, Face, Mesh3D, Vec3D, Viewport};
 use gemini_engine::gameloop;
-use rand::Rng;
 use tobj;
 
-const STL_FILEPATH: &str = "obj-view/shapes.obj";
-const FPS: u32 = 20;
+const OBJ_FILEPATH: &str = "obj-view/ren.obj";
+// const MTL_FILEPATH: &str = "obj-view/ren.mtl";
+const WIDTH: usize = 370;
+const HEIGHT: usize = 100;
+const FPS: u32 = 60;
 const FOV: f64 = 95.0;
 
 fn main() {
-    let mut view = View::new(400, 110, ColChar::BACKGROUND);
+    let mut view = View::new(WIDTH, HEIGHT, ColChar::BACKGROUND);
     let mut frame_skip = false;
 
     let mut viewport = Viewport::new(
         Vec3D::new(0.0, -0.7, 2.0),
         Vec3D::new(-0.3, 0.0, 0.0),
         FOV,
-        Vec2D::new((view.width / 2) as isize, (view.height / 2) as isize),
+        view.center(),
     );
+    viewport.character_size_ratio = 2.0;
 
-    let (models, _) = tobj::load_obj(STL_FILEPATH, &tobj::LoadOptions::default())
+    let (models, materials) = tobj::load_obj(OBJ_FILEPATH, &tobj::LoadOptions::default())
         .expect("Failed to OBJ load file");
+    let materials = materials.unwrap_or(vec![]); // TODO: fallback to MTL_FILEPATH
 
     let mesh3d_models: Vec<Mesh3D> = models
         .iter()
         .map(|model| {
             let mesh = &model.mesh;
-            let mut faces = vec![];
+
             let mut next_face = 0;
-            for f in 0..mesh.face_arities.len() {
+            let faces: Vec<Face> = (0..mesh.face_arities.len()).map(|f| {
                 let end = next_face + mesh.face_arities[f] as usize;
                 let face_indices = mesh.indices[next_face..end]
                     .iter()
                     .map(|i| *i as usize)
                     .rev()
                     .collect();
-                faces.push(Face::new(
-                    face_indices,
-                    ColChar::SOLID.with_hsv(rand::thread_rng().gen_range(0..=255), 255, 255),
-                ));
+
+                let material = match mesh.material_id {
+                    Some(material_id) => materials[material_id].diffuse.unwrap(),
+                    None => [1.0, 0.0, 1.0],
+                };
+
                 next_face = end;
-            }
+                Face::new(
+                    face_indices,
+                    ColChar::SOLID.with_rgb(
+                        (material[0] * 255.0) as u8,
+                        (material[1] * 255.0) as u8,
+                        (material[2] * 255.0) as u8,
+                    ),
+                )
+            }).collect();
 
             Mesh3D::new(
                 Vec3D::ZERO,
@@ -61,7 +75,7 @@ fn main() {
         let mut now_rendering = None;
         view.clear();
 
-        viewport.rotation.y -= 0.1;
+        viewport.rotation.y += 0.05;
 
         match frame_skip {
             true => frame_skip = false,
@@ -69,7 +83,10 @@ fn main() {
                 viewport.blit_to(
                     &mut view,
                     mesh3d_models.iter().collect(),
-                    DisplayMode::Solid,
+                    DisplayMode::Wireframe {
+                        backface_culling: false,
+                        coloured: false,
+                    },
                 );
 
                 elapsed_blitting = Some(now_blitting.elapsed());
