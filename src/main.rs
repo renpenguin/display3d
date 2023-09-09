@@ -1,21 +1,34 @@
 use gemini_engine::elements::{view::ColChar, View};
 use gemini_engine::elements3d::{DisplayMode, Face, Mesh3D, Vec3D, Viewport};
 use gemini_engine::gameloop;
-use tobj;
+use tobj::{self, Material};
 
-const OBJ_FILEPATH: &str = "obj-view/model.obj";
+const OBJ_FILEPATH: &str = "obj-view/resources/ren.obj";
 // const MTL_FILEPATH: &str = "obj-view/model.mtl";
 const WIDTH: usize = 370;
-const HEIGHT: usize = 100;
+const HEIGHT: usize = 90;
 const FPS: u32 = 60;
 const FOV: f64 = 95.0;
+
+fn get_mateial_as_col_char(materials: &Vec<Material>, material_id: Option<usize>) -> ColChar {
+    let colour_rgb = match material_id {
+        Some(material_id) => materials[material_id].diffuse.unwrap(),
+        None => [1.0, 0.0, 1.0],
+    };
+
+    ColChar::SOLID.with_rgb(
+        (colour_rgb[0] * 255.0) as u8,
+        (colour_rgb[1] * 255.0) as u8,
+        (colour_rgb[2] * 255.0) as u8,
+    )
+}
 
 fn main() {
     let mut view = View::new(WIDTH, HEIGHT, ColChar::BACKGROUND);
     let mut frame_skip = false;
 
     let mut viewport = Viewport::new(
-        Vec3D::new(0.0, -0.7, 2.0),
+        Vec3D::new(0.0, -0.7, 2.2),
         Vec3D::new(-0.3, 0.0, 0.0),
         FOV,
         view.center(),
@@ -32,31 +45,35 @@ fn main() {
             let mesh = &model.mesh;
 
             let mut next_face = 0;
-            let faces: Vec<Face> = (0..mesh.face_arities.len())
-                .map(|f| {
-                    let end = next_face + mesh.face_arities[f] as usize;
-                    let face_indices = mesh.indices[next_face..end]
-                        .iter()
-                        .map(|i| *i as usize)
-                        .rev()
-                        .collect();
+            let faces: Vec<Face> = match mesh.face_arities.len() {
+                // If face_arities is empty (triangulate is on or mesh consists of triangles only)
+                0 => mesh
+                    .indices
+                    .chunks(3)
+                    .map(|v| {
+                        Face::new(
+                            v.iter().map(|i| *i as usize).collect(),
+                            get_mateial_as_col_char(&materials, mesh.material_id),
+                        )
+                    })
+                    .collect(),
+                // Otherwise
+                _ => (0..mesh.face_arities.len())
+                    .map(|f| {
+                        let end = next_face + mesh.face_arities[f] as usize;
+                        let face_indices = mesh.indices[next_face..end]
+                            .iter()
+                            .map(|i| *i as usize)
+                            .rev()
+                            .collect();
 
-                    let material = match mesh.material_id {
-                        Some(material_id) => materials[material_id].diffuse.unwrap(),
-                        None => [1.0, 0.0, 1.0],
-                    };
+                        let material = get_mateial_as_col_char(&materials, mesh.material_id);
 
-                    next_face = end;
-                    Face::new(
-                        face_indices,
-                        ColChar::SOLID.with_rgb(
-                            (material[0] * 255.0) as u8,
-                            (material[1] * 255.0) as u8,
-                            (material[2] * 255.0) as u8,
-                        ),
-                    )
-                })
-                .collect();
+                        next_face = end;
+                        Face::new(face_indices, material)
+                    })
+                    .collect(),
+            };
 
             Mesh3D::new(
                 Vec3D::ZERO,
