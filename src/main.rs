@@ -1,5 +1,5 @@
-use gemini_engine::elements::{view::ColChar, View};
-use gemini_engine::elements3d::{DisplayMode, Mesh3D, Vec3D, Viewport};
+use gemini_engine::elements::view::{ColChar, View, Wrapping};
+use gemini_engine::elements3d::{DisplayMode, Mesh3D, Transform3D, Vec3D, Viewport};
 use gemini_engine::gameloop;
 use obj_view::obj_to_mesh3ds;
 use tobj;
@@ -16,8 +16,7 @@ fn main() {
     let mut frame_skip = false;
 
     let mut viewport = Viewport::new(
-        Vec3D::new(0.0, -0.7, 2.2),
-        Vec3D::new(-0.3, 0.0, 0.0),
+        Transform3D::new_tr(Vec3D::new(0.0, -0.7, 2.2), Vec3D::new(-0.3, 0.0, 0.0)),
         FOV,
         view.center(),
     );
@@ -36,15 +35,14 @@ fn main() {
         let mut now_rendering = None;
         view.clear();
 
-        viewport.rotation.y += 0.05;
+        viewport.transform.rotation.y += 0.05;
 
         match frame_skip {
             true => frame_skip = false,
             false => {
-                viewport.blit_to(
-                    &mut view,
-                    mesh3d_models.iter().collect(),
-                    DisplayMode::Solid,
+                view.blit(
+                    &viewport.render(mesh3d_models.iter().collect(), DisplayMode::Solid),
+                    Wrapping::Ignore,
                 );
 
                 elapsed_blitting = Some(now_blitting.elapsed());
