@@ -1,6 +1,6 @@
 use gemini_engine::{
     elements::view::ColChar,
-    elements3d::{Face, Mesh3D, Vec3D},
+    elements3d::{IndexFace as Face, Mesh3D, Transform3D, Vec3D},
 };
 use tobj::{Material, Model};
 
@@ -58,7 +58,7 @@ pub fn model_to_mesh3d(model: &Model, materials: &Vec<Material>) -> Mesh3D {
                 .collect(),
         };
 
-        Mesh3D::new(Vec3D::ZERO, Vec3D::ZERO, vertices, faces)
+        Mesh3D::with_faces(Transform3D::DEFAULT, vertices, faces)
     }
 }
 
