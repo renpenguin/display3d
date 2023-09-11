@@ -22,8 +22,9 @@ fn main() {
     );
     viewport.character_width_multiplier = 2.2;
 
-    let (models, materials) = tobj::load_obj(OBJ_FILEPATH, &tobj::LoadOptions::default())
-        .expect("Failed to OBJ load file");
+    let load_options = tobj::LoadOptions::default();
+    let (models, materials) =
+        tobj::load_obj(OBJ_FILEPATH, &load_options).expect("Failed to OBJ load file");
     let materials = materials.unwrap_or(vec![]); // TODO: fallback to MTL_FILEPATH
 
     let mesh3d_models: Vec<Mesh3D> = obj_to_mesh3ds(models, materials);
