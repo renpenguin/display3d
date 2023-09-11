@@ -20,41 +20,47 @@ pub fn get_mateial_as_col_char(materials: &Vec<Material>, material_id: Option<us
 pub fn model_to_mesh3d(model: &Model, materials: &Vec<Material>) -> Mesh3D {
     let mesh = &model.mesh;
 
+    // let all_texcoords: Vec<Vector2<f64>> = mesh.texcoords.chunks(2).map(|k| Vector2::new(k[0] as f64, k[1] as f64)).collect();
+    // let indexed_texcoords: Vec<Vector2<f64>> = mesh.texcoord_indices.iter().map(|i| all_texcoords[*i as usize]).collect();
+
     let vertices = mesh
         .positions
         .chunks(3)
         .map(|v| Vec3D::new(v[0].into(), v[1].into(), v[2].into()))
         .collect();
 
-    let mut next_face = 0;
     let faces: Vec<Face> = match mesh.face_arities.len() {
         // If face_arities is empty (triangulate is on or mesh consists of triangles only)
         0 => mesh
             .indices
             .chunks(3)
             .map(|v| {
+                let v_indices = v.iter().map(|i| *i as usize).collect();
                 Face::new(
-                    v.iter().map(|i| *i as usize).collect(),
+                    v_indices,
                     get_mateial_as_col_char(&materials, mesh.material_id),
                 )
             })
             .collect(),
         // Otherwise
-        _ => (0..mesh.face_arities.len())
-            .map(|f| {
-                let end = next_face + mesh.face_arities[f] as usize;
-                let face_indices = mesh.indices[next_face..end]
-                    .iter()
-                    .map(|i| *i as usize)
-                    .rev()
-                    .collect();
+        _ => {
+            let mut next_face = 0;
+            (0..mesh.face_arities.len())
+                .map(|f| {
+                    let end = next_face + mesh.face_arities[f] as usize;
+                    let face_indices = mesh.indices[next_face..end]
+                        .iter()
+                        .map(|i| *i as usize)
+                        .rev()
+                        .collect();
 
-                let material = get_mateial_as_col_char(&materials, mesh.material_id);
+                    let material = get_mateial_as_col_char(&materials, mesh.material_id);
 
-                next_face = end;
-                Face::new(face_indices, material)
-            })
-            .collect(),
+                    next_face = end;
+                    Face::new(face_indices, material)
+                })
+                .collect()
+        }
     };
 
     Mesh3D::new(Transform3D::DEFAULT, vertices, faces)
