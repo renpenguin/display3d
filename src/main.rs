@@ -31,13 +31,15 @@ fn main() {
     let mut elapsed_blitting;
     let mut elapsed_rendering;
     fps_gameloop!(
-        { // Logic
+        {
+            // Logic
             view.clear();
             viewport.transform.rotation.y += 0.05;
             elapsed_blitting = None;
             elapsed_rendering = None;
         },
-        { // Rendering
+        {
+            // Rendering
             let now_blitting = gameloop::Instant::now();
             view.blit(
                 &viewport.render(mesh3d_models.iter().collect(), DisplayMode::Solid),
@@ -50,7 +52,8 @@ fn main() {
             elapsed_rendering = Some(now_rendering.elapsed());
         },
         FPS,
-        |elapsed: gameloop::Duration, frame_skip| { // Timing info
+        |elapsed: gameloop::Duration, frame_skip| {
+            // Timing info
             println!(
             "Elapsed - Blitting: {:.2?}µs, Rendering: {:.2?}µs, Total: {:.2?}µs | Frame skip: {}",
             elapsed_blitting
