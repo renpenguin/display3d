@@ -8,7 +8,7 @@ const OBJ_FILEPATH: &str = "obj-view/resources/ren.obj";
 // const MTL_FILEPATH: &str = "obj-view/model.mtl";
 const WIDTH: usize = 370;
 const HEIGHT: usize = 90;
-const FPS: u32 = 60;
+const FPS: f32 = 60.0;
 const FOV: f64 = 95.0;
 
 fn main() {
@@ -42,7 +42,12 @@ fn main() {
             // Rendering
             let now_blitting = gameloop::Instant::now();
             view.blit(
-                &viewport.render(mesh3d_models.iter().collect(), DisplayMode::Solid),
+                &viewport.render(
+                    mesh3d_models.iter().collect(),
+                    DisplayMode::Wireframe {
+                        backface_culling: true,
+                    },
+                ),
                 Wrapping::Ignore,
             );
             elapsed_blitting = Some(now_blitting.elapsed());

@@ -4,7 +4,7 @@ use gemini_engine::{
 };
 use tobj::{Material, Model};
 
-pub fn get_mateial_as_col_char(materials: &Vec<Material>, material_id: Option<usize>) -> ColChar {
+pub fn get_mateial_as_col_char(materials: &[Material], material_id: Option<usize>) -> ColChar {
     let colour_rgb = match material_id {
         Some(material_id) => materials[material_id].diffuse.unwrap(),
         None => [1.0, 0.0, 1.0],
@@ -17,7 +17,7 @@ pub fn get_mateial_as_col_char(materials: &Vec<Material>, material_id: Option<us
     )
 }
 
-pub fn model_to_mesh3d(model: &Model, materials: &Vec<Material>) -> Mesh3D {
+pub fn model_to_mesh3d(model: &Model, materials: &[Material]) -> Mesh3D {
     let mesh = &model.mesh;
 
     // let all_texcoords: Vec<Vector2<f64>> = mesh.texcoords.chunks(2).map(|k| Vector2::new(k[0] as f64, k[1] as f64)).collect();
