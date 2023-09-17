@@ -38,7 +38,7 @@ pub fn model_to_mesh3d(model: &Model, materials: &[Material]) -> Mesh3D {
                 let v_indices = v.iter().map(|i| *i as usize).collect();
                 Face::new(
                     v_indices,
-                    get_mateial_as_col_char(&materials, mesh.material_id),
+                    get_mateial_as_col_char(materials, mesh.material_id),
                 )
             })
             .collect(),
@@ -54,7 +54,7 @@ pub fn model_to_mesh3d(model: &Model, materials: &[Material]) -> Mesh3D {
                         .rev()
                         .collect();
 
-                    let material = get_mateial_as_col_char(&materials, mesh.material_id);
+                    let material = get_mateial_as_col_char(materials, mesh.material_id);
 
                     next_face = end;
                     Face::new(face_indices, material)

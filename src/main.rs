@@ -2,7 +2,6 @@ use gemini_engine::elements::view::{ColChar, View, Wrapping};
 use gemini_engine::elements3d::{DisplayMode, Mesh3D, Transform3D, Vec3D, Viewport};
 use gemini_engine::{fps_gameloop, gameloop};
 use obj_view::obj_to_mesh3ds;
-use tobj;
 
 const OBJ_FILEPATH: &str = "obj-view/resources/ren.obj";
 // const MTL_FILEPATH: &str = "obj-view/model.mtl";
