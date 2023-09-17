@@ -44,9 +44,7 @@ fn main() {
             view.blit(
                 &viewport.render(
                     mesh3d_models.iter().collect(),
-                    DisplayMode::Wireframe {
-                        backface_culling: true,
-                    },
+                    DisplayMode::Solid,
                 ),
                 Wrapping::Ignore,
             );
