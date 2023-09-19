@@ -41,10 +41,7 @@ fn main() {
             // Rendering
             let now_blitting = gameloop::Instant::now();
             view.blit(
-                &viewport.render(
-                    mesh3d_models.iter().collect(),
-                    DisplayMode::Solid,
-                ),
+                &viewport.render(mesh3d_models.iter().collect(), DisplayMode::Solid),
                 Wrapping::Ignore,
             );
             elapsed_blitting = Some(now_blitting.elapsed());
