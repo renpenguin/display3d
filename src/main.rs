@@ -1,9 +1,11 @@
+use std::env;
+
 use gemini_engine::elements::view::{ColChar, View, Wrapping};
 use gemini_engine::elements3d::{DisplayMode, Mesh3D, Transform3D, Vec3D, Viewport};
 use gemini_engine::{fps_gameloop, gameloop};
 use obj_view::obj_to_mesh3ds;
 
-const OBJ_FILEPATH: &str = "obj-view/resources/ren.obj";
+// const OBJ_FILEPATH: &str = "obj-view/resources/ren.obj";
 // const MTL_FILEPATH: &str = "obj-view/model.mtl";
 const WIDTH: usize = 370;
 const HEIGHT: usize = 90;
@@ -11,6 +13,8 @@ const FPS: f32 = 60.0;
 const FOV: f64 = 95.0;
 
 fn main() {
+    let args: Vec<String> = env::args().collect();
+    let obj_filepath = &args[1];
     let mut view = View::new(WIDTH, HEIGHT, ColChar::BACKGROUND);
 
     let mut viewport = Viewport::new(
@@ -22,7 +26,7 @@ fn main() {
 
     let load_options = tobj::LoadOptions::default();
     let (models, materials) =
-        tobj::load_obj(OBJ_FILEPATH, &load_options).expect("Failed to OBJ load file");
+        tobj::load_obj(obj_filepath, &load_options).expect("Failed to OBJ load file");
     let materials = materials.unwrap_or(vec![]); // TODO: fallback to MTL_FILEPATH
 
     let mesh3d_models: Vec<Mesh3D> = obj_to_mesh3ds(models, materials);
