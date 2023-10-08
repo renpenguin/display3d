@@ -4,7 +4,7 @@ use std::time::{Duration, Instant};
 use gemini_engine::{
     elements::{view::Wrapping, View},
     elements3d::{DisplayMode, Mesh3D, Transform3D, Viewport},
-    gameloop::{MainLoopRoot, sleep_fps},
+    gameloop::{sleep_fps, MainLoopRoot},
 };
 pub use obj_to_mesh3d::{get_obj_from_file, obj_to_mesh3ds};
 
