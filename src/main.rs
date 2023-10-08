@@ -26,6 +26,5 @@ fn main() {
         mesh3d_models,
     );
 
-
     root.main_loop(FPS);
 }
