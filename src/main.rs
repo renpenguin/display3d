@@ -36,13 +36,13 @@ fn main() {
     fps_gameloop!(
         {
             // Logic
-            view.clear();
             viewport.transform.rotation.y += 0.05;
             elapsed_blitting = None;
             elapsed_rendering = None;
         },
         {
             // Rendering
+            view.clear();
             let now_blitting = gameloop::Instant::now();
             view.blit(
                 &viewport.render(mesh3d_models.iter().collect(), DisplayMode::Solid),
