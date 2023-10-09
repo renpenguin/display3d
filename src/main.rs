@@ -20,9 +20,9 @@ fn main() {
     let mesh3d_models: Vec<Mesh3D> = obj_view::obj_to_mesh3ds(models, materials);
 
     let mut root = Root::new(
-        View::new(WIDTH, HEIGHT, ColChar::BACKGROUND),
+        View::new(WIDTH, HEIGHT, ColChar::SOLID.with_rgb(40, 40, 40)),
         FOV,
-        Transform3D::new_tr(Vec3D::new(0.0, -0.7, 2.2), Vec3D::new(-0.3, 0.0, 0.0)),
+        Transform3D::new_tr(Vec3D::new(0.0, -0.7, 3.2), Vec3D::new(-0.3, 0.0, 0.0)),
         mesh3d_models,
     );
 
