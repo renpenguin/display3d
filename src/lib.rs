@@ -6,7 +6,7 @@ use gemini_engine::{
         view::{ColChar, Wrapping},
         View,
     },
-    elements3d::{DisplayMode, Grid3D, Mesh3D, Transform3D, Viewport, Vec3D},
+    elements3d::{DisplayMode, Grid3D, Mesh3D, Transform3D, Viewport},
     gameloop::{sleep_fps, MainLoopRoot},
 };
 pub use obj_to_mesh3d::{get_obj_from_file, obj_to_mesh3ds};
@@ -27,13 +27,14 @@ impl Root {
         fov: f64,
         initial_viewport_transform: Transform3D,
         models: Vec<Mesh3D>,
+        cell_count: usize,
     ) -> Root {
         let viewport_center = canvas.center();
         Root {
             view: canvas,
             viewport: Viewport::new(initial_viewport_transform, fov, viewport_center),
             models,
-            grid: Grid3D::new(1.0, 8, ColChar::BACKGROUND),
+            grid: Grid3D::new(1.0, cell_count, ColChar::BACKGROUND),
             elapsed_blitting: Duration::ZERO,
             elapsed_rendering: Duration::ZERO,
         }
@@ -53,7 +54,9 @@ impl MainLoopRoot for Root {
         self.view.blit(
             &self.viewport.render(
                 vec![&self.grid],
-                DisplayMode::Wireframe { backface_culling: false },
+                DisplayMode::Wireframe {
+                    backface_culling: false,
+                },
             ),
             Wrapping::Ignore,
         );
