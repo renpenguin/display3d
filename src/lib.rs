@@ -6,7 +6,7 @@ use gemini_engine::{
         view::{ColChar, Wrapping},
         View,
     },
-    elements3d::{DisplayMode, Grid3D, Mesh3D, Transform3D, Viewport},
+    elements3d::{DisplayMode, Grid3D, Mesh3D, Transform3D, ViewElement3D, Viewport},
     gameloop::{sleep_fps, MainLoopRoot},
 };
 pub use obj_to_mesh3d::{get_obj_from_file, obj_to_mesh3ds};
@@ -45,12 +45,16 @@ impl MainLoopRoot for Root {
     type InputDataType = u8;
     fn frame(&mut self, _input_data: Option<Self::InputDataType>) {
         self.viewport.transform.rotation.y += 0.05;
+        for model in self.models.iter_mut() {
+            model.transform.translation.y = -0.2
+        }
     }
 
     fn render_frame(&mut self) {
         self.view.clear();
         let now = Instant::now();
 
+        // Render grid first so it never appears over any objects
         self.view.blit(
             &self.viewport.render(
                 vec![&self.grid],
@@ -60,10 +64,9 @@ impl MainLoopRoot for Root {
             ),
             Wrapping::Ignore,
         );
+        let objects: Vec<&dyn ViewElement3D> = self.models.iter().map(|m| m as _).collect();
         self.view.blit(
-            &self
-                .viewport
-                .render(self.models.iter().collect(), DisplayMode::Solid),
+            &self.viewport.render(objects, DisplayMode::Solid),
             Wrapping::Ignore,
         );
 
