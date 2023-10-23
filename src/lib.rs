@@ -60,15 +60,15 @@ impl MainLoopRoot for Root {
         let now = Instant::now();
 
         // Render grid first so it never appears over any objects
-        self.view.blit(
-            &self.viewport.render(
-                vec![&self.grid],
-                DisplayMode::Wireframe {
-                    backface_culling: false,
-                },
-            ),
-            Wrapping::Ignore,
-        );
+        // self.view.blit(
+        //     &self.viewport.render(
+        //         vec![&self.grid],
+        //         DisplayMode::Wireframe {
+        //             backface_culling: false,
+        //         },
+        //     ),
+        //     Wrapping::Ignore,
+        // );
         let objects: Vec<&dyn ViewElement3D> = self.models.iter().map(|m| m as _).collect();
         self.view.blit(
             &self.viewport.render(objects, DisplayMode::Illuminated { lights: self.lights.clone() }),
