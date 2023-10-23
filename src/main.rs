@@ -8,7 +8,7 @@ use obj_view::Root;
 // const OBJ_FILEPATH: &str = "obj-view/resources/ren.obj";
 // const MTL_FILEPATH: &str = "obj-view/model.mtl";
 const WIDTH: usize = 370;
-const HEIGHT: usize = 90;
+const HEIGHT: usize = 100;
 const FPS: f32 = 60.0;
 const FOV: f64 = 95.0;
 
