@@ -11,6 +11,7 @@ use gemini_engine::{
 };
 pub use obj_to_mesh3d::{get_obj_from_file, obj_to_mesh3ds};
 
+#[allow(dead_code)]
 pub struct Root {
     view: View,
     viewport: Viewport,
