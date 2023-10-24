@@ -6,7 +6,9 @@ use gemini_engine::{
         view::{ColChar, Wrapping},
         View,
     },
-    elements3d::{DisplayMode, Grid3D, Mesh3D, Transform3D, ViewElement3D, Viewport, view3d::Light, Vec3D},
+    elements3d::{
+        view3d::Light, DisplayMode, Grid3D, Mesh3D, Transform3D, ViewElement3D, Viewport,
+    },
     gameloop::{sleep_fps, MainLoopRoot},
 };
 pub use obj_to_mesh3d::{get_obj_from_file, obj_to_mesh3ds};
@@ -30,15 +32,13 @@ impl Root {
         initial_viewport_transform: Transform3D,
         models: Vec<Mesh3D>,
         cell_count: usize,
+        lights: Vec<Light>,
     ) -> Root {
         let viewport_center = canvas.center();
         Root {
             view: canvas,
             viewport: Viewport::new(initial_viewport_transform, fov, viewport_center),
-            lights: vec![
-                Light::new_ambient(0.3),
-                Light::new_directional(0.7, Vec3D::new(-2.0, -1.0, 3.0)),
-            ],
+            lights,
             models,
             grid: Grid3D::new(1.0, cell_count, ColChar::BACKGROUND),
             elapsed_blitting: Duration::ZERO,
@@ -72,7 +72,12 @@ impl MainLoopRoot for Root {
         // );
         let objects: Vec<&dyn ViewElement3D> = self.models.iter().map(|m| m as _).collect();
         self.view.blit(
-            &self.viewport.render(objects, DisplayMode::Illuminated { lights: self.lights.clone() }),
+            &self.viewport.render(
+                objects,
+                DisplayMode::Illuminated {
+                    lights: self.lights.clone(),
+                },
+            ),
             Wrapping::Ignore,
         );
 

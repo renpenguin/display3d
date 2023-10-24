@@ -1,7 +1,7 @@
 use std::env;
 
 use gemini_engine::elements::view::{ColChar, View};
-use gemini_engine::elements3d::{Mesh3D, Transform3D, Vec3D};
+use gemini_engine::elements3d::{Light, Mesh3D, Transform3D, Vec3D};
 use gemini_engine::gameloop::MainLoopRoot;
 use obj_view::Root;
 
@@ -20,11 +20,19 @@ fn main() {
     let mesh3d_models: Vec<Mesh3D> = obj_view::obj_to_mesh3ds(models, materials);
 
     let mut root = Root::new(
-        View::new(WIDTH, HEIGHT, ColChar::SOLID.with_rgb(40, 40, 40)),
+        View::new(
+            WIDTH,
+            HEIGHT,
+            ColChar::SOLID.with_rgb(40, 40, 40).with_char('$'),
+        ),
         FOV,
         Transform3D::new_tr(Vec3D::new(0.0, -0.7, 2.2), Vec3D::new(-0.3, 0.0, 0.0)),
         mesh3d_models,
         8,
+        vec![
+            Light::new_ambient(0.3),
+            Light::new_directional(0.7, Vec3D::new(-2.0, -1.0, 3.0)),
+        ],
     );
 
     root.main_loop(FPS);
