@@ -8,7 +8,7 @@ use obj_view::Root;
 // const OBJ_FILEPATH: &str = "obj-view/resources/ren.obj";
 // const MTL_FILEPATH: &str = "obj-view/model.mtl";
 const WIDTH: usize = 370;
-const HEIGHT: usize = 100;
+const HEIGHT: usize = 90;
 const FPS: f32 = 60.0;
 const FOV: f64 = 95.0;
 
@@ -24,7 +24,8 @@ fn main() {
             WIDTH,
             HEIGHT,
             ColChar::SOLID.with_rgb(40, 40, 40).with_char('$'),
-        ),
+        )
+        .with_block_until_resized(true),
         FOV,
         Transform3D::new_tr(Vec3D::new(0.0, -0.7, 2.2), Vec3D::new(-0.3, 0.0, 0.0)),
         mesh3d_models,
