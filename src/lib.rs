@@ -6,9 +6,7 @@ use gemini_engine::{
         view::{ColChar, Wrapping},
         View,
     },
-    elements3d::{
-        view3d::Light, DisplayMode, Grid3D, Mesh3D, Transform3D, ViewElement3D, Viewport,
-    },
+    elements3d::{DisplayMode, Grid3D, Mesh3D, Transform3D, ViewElement3D, Viewport},
     gameloop::{sleep_fps, MainLoopRoot},
 };
 pub use obj_to_mesh3d::{get_obj_from_file, obj_to_mesh3ds};
@@ -17,7 +15,7 @@ pub use obj_to_mesh3d::{get_obj_from_file, obj_to_mesh3ds};
 pub struct Root {
     view: View,
     viewport: Viewport,
-    lights: Vec<Light>,
+    display_mode: DisplayMode,
     models: Vec<Mesh3D>,
     grid: Grid3D,
     // Timing stats
@@ -32,13 +30,13 @@ impl Root {
         initial_viewport_transform: Transform3D,
         models: Vec<Mesh3D>,
         cell_count: usize,
-        lights: Vec<Light>,
+        display_mode: DisplayMode,
     ) -> Root {
         let viewport_center = canvas.center();
         Root {
             view: canvas,
             viewport: Viewport::new(initial_viewport_transform, fov, viewport_center),
-            lights,
+            display_mode,
             models,
             grid: Grid3D::new(1.0, cell_count, ColChar::BACKGROUND),
             elapsed_blitting: Duration::ZERO,
@@ -72,12 +70,7 @@ impl MainLoopRoot for Root {
         // );
         let objects: Vec<&dyn ViewElement3D> = self.models.iter().map(|m| m as _).collect();
         self.view.blit(
-            &self.viewport.render(
-                objects,
-                DisplayMode::Illuminated {
-                    lights: self.lights.clone(),
-                },
-            ),
+            &self.viewport.render(objects, self.display_mode.clone()),
             Wrapping::Ignore,
         );
 
@@ -95,10 +88,11 @@ impl MainLoopRoot for Root {
     ) -> (bool, Option<Self::InputDataType>) {
         // Hijack the sleep function to print elapsed times before falling back to default sleep function
         println!(
-            "Elapsed - Blitting: {:.2?}µs, Rendering: {:.2?}µs, Total: {:.2?}µs",
+            "Elapsed - Blitting: {:.2?}µs, Printing: {:.2?}µs, Total: {:.2?}µs, Using {:.2?}% of available time",
             self.elapsed_blitting.as_micros(),
             self.elapsed_rendering.as_micros(),
-            elapsed.as_micros()
+            elapsed.as_micros(),
+            elapsed.as_micros() as f32 / Duration::from_secs_f32(1.0 / fps).as_micros() as f32 * 100.0
         );
 
         (sleep_fps(fps, Some(elapsed)), None)
