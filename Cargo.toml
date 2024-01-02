@@ -1,10 +1,11 @@
 [package]
-name = "obj-view"
-version = "0.1.0"
+name = "display3d"
+version = "0.1.1"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 gemini-engine = { path = "../gemini" }
+stl_io = "0.7.0"
 tobj = "4.0.0"
