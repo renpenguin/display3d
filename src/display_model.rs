@@ -1,7 +1,7 @@
 use std::time::{Duration, Instant};
 
 use gemini_engine::{
-    elements::{view::Wrapping, View},
+    elements::{view::{Wrapping, utils::get_termsize_as_vec2d}, View},
     elements3d::{DisplayMode, Mesh3D, Transform3D, ViewElement3D, Viewport},
     gameloop::{sleep_fps, MainLoopRoot},
 };
@@ -44,12 +44,15 @@ impl MainLoopRoot for Root {
     type InputDataType = u8;
     fn frame(&mut self, _input_data: Option<Self::InputDataType>) {
         self.viewport.transform.rotation.y += 0.05;
-        for model in self.models.iter_mut() {
-            model.transform.translation.y = -0.2
-        }
     }
 
     fn render_frame(&mut self) {
+        // Auto-resize
+        let term_size = get_termsize_as_vec2d().expect("Failed to get terminal size");
+        self.view.width = term_size.x as usize;
+        self.view.height = term_size.y as usize - 3;
+        self.viewport.origin = self.view.center();
+
         self.view.clear();
         let now = Instant::now();
 
