@@ -35,8 +35,8 @@ fn main() {
         model_file.to_mesh3ds(),
         DisplayMode::Illuminated {
             lights: vec![
-                Light::new_ambient(0.5),
-                Light::new_directional(0.5, Vec3D::new(-2.0, -1.0, 3.0)),
+                Light::new_ambient(0.6),
+                Light::new_directional(0.4, Vec3D::new(-2.0, -1.0, 3.0)),
             ],
         },
         config.show_benchmark,

@@ -42,7 +42,7 @@ impl Default for Config {
     fn default() -> Self {
         Config::new(
             String::new(),
-            Transform3D::new_tr(Vec3D::new(0.0, 0.0, 3.2), Vec3D::new(-0.3, 0.0, 0.0)),
+            Transform3D::new_tr(Vec3D::new(0.0, 0.0, 3.2), Vec3D::ZERO),
             95.0,
             60.0,
             ColChar::EMPTY,
@@ -95,8 +95,8 @@ impl Config {
             while i < args.len() - 1 {
                 i += 1;
                 match args[i].as_str() {
-					// TODO: viewport_position
-					// TODO: viewport_rotation
+                    // TODO: viewport_position
+                    // TODO: viewport_rotation
                     "--fov" => {
                         config.fov = parse_next_argument(&args, &mut i)?;
                     }
@@ -106,7 +106,7 @@ impl Config {
                     "--background-char" => {
                         config.background_colchar.text_char = parse_next_argument(&args, &mut i)?;
                     }
-					// TODO: background_colour
+                    // TODO: background_colour
                     "--show-benchmark" => config.show_benchmark = true,
                     _ => return Err(String::from("Invalid argument")),
                 }
