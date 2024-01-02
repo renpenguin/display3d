@@ -95,18 +95,28 @@ impl Config {
             while i < args.len() - 1 {
                 i += 1;
                 match args[i].as_str() {
-                    // TODO: viewport_position
-                    // TODO: viewport_rotation
+                    // Viewport translation
+					"-tx" => config.viewport_transform.translation.x = parse_next_argument(&args, &mut i)?,
+					"-ty" => config.viewport_transform.translation.y = parse_next_argument(&args, &mut i)?,
+					"-tz" => config.viewport_transform.translation.z = parse_next_argument(&args, &mut i)?,
+
+                    // Viewport rotation
+					"-rx" => config.viewport_transform.rotation.x = parse_next_argument(&args, &mut i)?,
+					"-ry" => config.viewport_transform.rotation.y = parse_next_argument(&args, &mut i)?,
+					"-rz" => config.viewport_transform.rotation.z = parse_next_argument(&args, &mut i)?,
+
                     "--fov" => {
                         config.fov = parse_next_argument(&args, &mut i)?;
                     }
                     "--fps" => {
                         config.fps = parse_next_argument(&args, &mut i)?;
                     }
+
                     "--background-char" => {
                         config.background_colchar.text_char = parse_next_argument(&args, &mut i)?;
                     }
                     // TODO: background_colour
+
                     "--show-benchmark" => config.show_benchmark = true,
                     _ => return Err(String::from("Invalid argument")),
                 }
