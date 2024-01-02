@@ -1,3 +1,6 @@
+mod config;
+pub use config::Config;
+
 mod convert_to_mesh3d;
 pub use convert_to_mesh3d::ModelFile;
 

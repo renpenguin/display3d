@@ -1,42 +1,46 @@
-use std::env;
+use std::{env, process};
 
-use gemini_engine::elements::view::{ColChar, View};
-use gemini_engine::elements3d::{DisplayMode, Light, Mesh3D, Transform3D, Vec3D};
+use display3d::{Config, ModelFile, Root};
+use gemini_engine::elements::view::View;
+use gemini_engine::elements3d::{DisplayMode, Light, Vec3D};
 use gemini_engine::gameloop::MainLoopRoot;
-use obj_view::Root;
 
-// const OBJ_FILEPATH: &str = "obj-view/resources/ren.obj";
-// const MTL_FILEPATH: &str = "obj-view/model.mtl";
 const WIDTH: usize = 370;
 const HEIGHT: usize = 90;
-const FPS: f32 = 60.0;
-const FOV: f64 = 95.0;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    let obj_filepath = &args[1];
+    let config = Config::from_args(env::args()).unwrap_or_else(|e| {
+        eprintln!("An error occurred while parsing arguments: {e}");
+        process::exit(1);
+    });
 
-    let (models, materials) = obj_view::get_obj_from_file(obj_filepath);
-    let mesh3d_models: Vec<Mesh3D> = obj_view::obj_to_mesh3ds(models, materials);
+    let model_file = match ModelFile::new(&config.filepath) {
+        Ok(model) => model,
+        Err(e) => {
+            eprintln!("An error occurred while parsing the file: {e}");
+            process::exit(1);
+        }
+    };
 
     let mut root = Root::new(
         View::new(
+            // TODO: add auto-resize
             WIDTH,
             HEIGHT,
-            ColChar::SOLID.with_rgb(50, 40, 40).with_char('$'),
+            config.background_colchar, // ColChar::SOLID.with_rgb(50, 40, 40).with_char('$'),
         )
         .with_block_until_resized(true),
-        FOV,
-        Transform3D::new_tr(Vec3D::new(0.0, -0.7, 2.2), Vec3D::new(-0.3, 0.0, 0.0)),
-        mesh3d_models,
-        8,
+        config.fov,
+        config.viewport_transform,
+        model_file.to_mesh3ds(),
         DisplayMode::Illuminated {
             lights: vec![
-                Light::new_ambient(0.3),
-                Light::new_directional(0.7, Vec3D::new(-2.0, -1.0, 3.0)),
+                Light::new_ambient(0.5),
+                Light::new_directional(0.5, Vec3D::new(-2.0, -1.0, 3.0)),
             ],
         },
+        config.show_benchmark,
     );
 
-    root.main_loop(FPS);
+    root.main_loop(config.fps);
 }

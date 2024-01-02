@@ -1,11 +1,8 @@
 use std::time::{Duration, Instant};
 
 use gemini_engine::{
-    elements::{
-        view::{ColChar, Wrapping},
-        View,
-    },
-    elements3d::{DisplayMode, Grid3D, Mesh3D, Transform3D, ViewElement3D, Viewport},
+    elements::{view::Wrapping, View},
+    elements3d::{DisplayMode, Mesh3D, Transform3D, ViewElement3D, Viewport},
     gameloop::{sleep_fps, MainLoopRoot},
 };
 
@@ -15,7 +12,6 @@ pub struct Root {
     viewport: Viewport,
     display_mode: DisplayMode,
     models: Vec<Mesh3D>,
-    grid: Grid3D,
     // Timing stats
     show_benchmark: bool,
     elapsed_blitting: Duration,
@@ -28,9 +24,8 @@ impl Root {
         fov: f64,
         initial_viewport_transform: Transform3D,
         models: Vec<Mesh3D>,
-        cell_count: usize,
         display_mode: DisplayMode,
-        show_benchmark: bool
+        show_benchmark: bool,
     ) -> Root {
         let viewport_center = canvas.center();
         Root {
@@ -38,7 +33,6 @@ impl Root {
             viewport: Viewport::new(initial_viewport_transform, fov, viewport_center),
             display_mode,
             models,
-            grid: Grid3D::new(1.0, cell_count, ColChar::BACKGROUND),
             show_benchmark,
             elapsed_blitting: Duration::ZERO,
             elapsed_rendering: Duration::ZERO,
@@ -59,16 +53,6 @@ impl MainLoopRoot for Root {
         self.view.clear();
         let now = Instant::now();
 
-        // Render grid first so it never appears over any objects
-        // self.view.blit(
-        //     &self.viewport.render(
-        //         vec![&self.grid],
-        //         DisplayMode::Wireframe {
-        //             backface_culling: false,
-        //         },
-        //     ),
-        //     Wrapping::Ignore,
-        // );
         let objects: Vec<&dyn ViewElement3D> = self.models.iter().map(|m| m as _).collect();
         self.view.blit(
             &self.viewport.render(objects, self.display_mode.clone()),
@@ -88,13 +72,15 @@ impl MainLoopRoot for Root {
         elapsed: Duration,
     ) -> (bool, Option<Self::InputDataType>) {
         // Hijack the sleep function to print elapsed times before falling back to default sleep function
-        println!(
-            "Elapsed - Blitting: {:.2?}µs, Printing: {:.2?}µs, Total: {:.2?}µs, Using {:.2?}% of available time",
-            self.elapsed_blitting.as_micros(),
-            self.elapsed_rendering.as_micros(),
-            elapsed.as_micros(),
-            elapsed.as_micros() as f32 / Duration::from_secs_f32(1.0 / fps).as_micros() as f32 * 100.0
-        );
+        if self.show_benchmark {
+            println!(
+                "Elapsed - Blitting: {:.2?}µs, Printing: {:.2?}µs, Total: {:.2?}µs, Using {:.2?}% of available time",
+                self.elapsed_blitting.as_micros(),
+                self.elapsed_rendering.as_micros(),
+                elapsed.as_micros(),
+                elapsed.as_micros() as f32 / Duration::from_secs_f32(1.0 / fps).as_micros() as f32 * 100.0
+            );
+        };
 
         (sleep_fps(fps, Some(elapsed)), None)
     }
