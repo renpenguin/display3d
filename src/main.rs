@@ -9,8 +9,6 @@ use gemini_engine::gameloop::MainLoopRoot;
 fn main() {
     let config = Config::parse();
 
-    println!("Parsed config!");
-
     let model_file = match ModelFile::new(&config.filepath) {
         Ok(model) => model,
         Err(e) => {
@@ -21,12 +19,12 @@ fn main() {
     let models = model_file.to_mesh3ds();
 
     println!(
-        "Parsed model for a total of {} faces!",
+        "Parsed model for a total of {} faces. Displaying...",
         models.iter().map(|m| m.faces.len()).sum::<usize>()
     );
 
     let mut root = Root::new(
-        View::new(0, 0, config.get_background_colchar()).with_block_until_resized(true),
+        View::new(0, 0, config.get_background_char()),
         config.fov,
         config.get_transform(),
         models,

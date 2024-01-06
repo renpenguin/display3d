@@ -41,7 +41,7 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn get_background_colchar(&self) -> ColChar {
+    pub fn get_background_char(&self) -> ColChar {
         ColChar::new(
             self.background_char,
             Modifier::Coded(self.background_modifier_code),
