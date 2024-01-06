@@ -1,8 +1,11 @@
 use std::time::{Duration, Instant};
 
 use gemini_engine::{
-    elements::{view::{Wrapping, utils::get_termsize_as_vec2d}, View},
-    elements3d::{DisplayMode, Mesh3D, Transform3D, ViewElement3D, Viewport},
+    elements::{
+        view::{utils::get_termsize_as_vec2d, Wrapping},
+        View,
+    },
+    elements3d::{DisplayMode, Mesh3D, Transform3D, Viewport},
     gameloop::{sleep_fps, MainLoopRoot},
 };
 
@@ -52,13 +55,16 @@ impl MainLoopRoot for Root {
         self.view.width = term_size.x as usize;
         self.view.height = term_size.y as usize - 3;
         self.viewport.origin = self.view.center();
-
         self.view.clear();
+
         let now = Instant::now();
 
-        let objects: Vec<&dyn ViewElement3D> = self.models.iter().map(|m| m as _).collect();
+        // let objects: Vec<&dyn ViewElement3D> = ;
         self.view.blit(
-            &self.viewport.render(objects, self.display_mode.clone()),
+            &self.viewport.render(
+                self.models.iter().map(|m| m as _).collect(),
+                self.display_mode.clone(),
+            ),
             Wrapping::Ignore,
         );
 

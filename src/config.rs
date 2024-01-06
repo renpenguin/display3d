@@ -1,128 +1,54 @@
+use clap::Parser;
 use gemini_engine::{
-    elements::view::ColChar,
+    elements::view::{ColChar, Modifier},
     elements3d::{Transform3D, Vec3D},
 };
-use std::{path::Path, str::FromStr};
 
-fn get_result_or_return_error<T, E>(value: Result<T, E>, error: &str) -> Result<T, String> {
-    match value {
-        Ok(value) => Ok(value),
-        Err(_) => Err(String::from(error)),
-    }
-}
-
-fn try_get<'a>(iter: &'a [String], index: usize, error: &str) -> Result<&'a String, String> {
-    iter.get(index).ok_or(String::from(error))
-}
-
-fn parse_next_argument<F: FromStr>(iter: &[String], index: &mut usize) -> Result<F, String> {
-    *index += 1;
-    get_result_or_return_error(
-        try_get(iter, *index, "Not enough arguments")?.parse(),
-        &format!("Couldnt parse argument for {}", iter[*index - 1]),
-    )
-}
-
+/// Simple program to greet a person
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = "None")]
 pub struct Config {
+    /// The filepath of the 3D model
+    #[arg()]
     pub filepath: String,
 
-    // 3D Space
-    pub viewport_transform: Transform3D,
+    /// The translation of the viewport/camera
+    #[arg(short, long, default_value_t = Vec3D::new(0.0,-0.5,3.0))]
+    pub translation: Vec3D,
+
+    /// The rotation of the viewport/camera
+    #[arg(short, long, default_value_t = Vec3D::new(-0.2,0.0,0.0))]
+    pub rotation: Vec3D,
+
+    /// The FOV of the viewport
+    #[arg(long, default_value_t = 95.0)]
     pub fov: f64,
+    /// The FPS at which the animation should run
+    #[arg(long, default_value_t = 60.0)]
     pub fps: f32,
 
-    // Display
-    pub background_colchar: ColChar,
+    /// Character used by the background
+    #[arg(long, default_value_t = ' ')]
+    pub background_char: char,
+    /// ANSI Code to modify background, see https://wikipedia.org/wiki/ANSI_escape_code#Colors
+    #[arg(short, long, default_value_t = 0)]
+    pub background_modifier_code: u8,
 
     // Debug
+    /// Whether to show render times below the rendered image
+    #[arg(long, default_value_t = false)]
     pub show_benchmark: bool,
 }
 
-impl Default for Config {
-    fn default() -> Self {
-        Config::new(
-            String::new(),
-            Transform3D::new_tr(Vec3D::new(0.0, 0.0, 3.2), Vec3D::ZERO),
-            95.0,
-            60.0,
-            ColChar::EMPTY,
-            false,
+impl Config {
+    pub fn get_background_colchar(&self) -> ColChar {
+        ColChar::new(
+            self.background_char,
+            Modifier::Coded(self.background_modifier_code),
         )
     }
-}
 
-impl Config {
-    pub fn new(
-        filepath: String,
-        viewport_transform: Transform3D,
-        fov: f64,
-        fps: f32,
-        background_colchar: ColChar,
-        show_benchmark: bool,
-    ) -> Self {
-        Self {
-            filepath,
-            viewport_transform,
-            fov,
-            fps,
-            background_colchar,
-            show_benchmark,
-        }
-    }
-
-    pub fn from_args(args: impl Iterator<Item = String>) -> Result<Config, String> {
-        let args: Vec<String> = args.collect();
-
-        if args.len() < 2 {
-            return Err(String::from(
-                "Not enough arguments, please provide a filepath",
-            ));
-        }
-
-        let mut config = Config::default();
-
-        match Path::new(&args[1]).try_exists() {
-            Ok(exists) => match exists {
-                true => config.filepath = args[1].to_string(),
-                false => return Err(String::from("Filepath does not exist")),
-            },
-            Err(err) => return Err(err.to_string()),
-        }
-
-        if args.len() > 2 {
-            // Apply other arguments here
-            let mut i = 1;
-            while i < args.len() - 1 {
-                i += 1;
-                match args[i].as_str() {
-                    // Viewport translation
-					"-tx" => config.viewport_transform.translation.x = parse_next_argument(&args, &mut i)?,
-					"-ty" => config.viewport_transform.translation.y = parse_next_argument(&args, &mut i)?,
-					"-tz" => config.viewport_transform.translation.z = parse_next_argument(&args, &mut i)?,
-
-                    // Viewport rotation
-					"-rx" => config.viewport_transform.rotation.x = parse_next_argument(&args, &mut i)?,
-					"-ry" => config.viewport_transform.rotation.y = parse_next_argument(&args, &mut i)?,
-					"-rz" => config.viewport_transform.rotation.z = parse_next_argument(&args, &mut i)?,
-
-                    "--fov" => {
-                        config.fov = parse_next_argument(&args, &mut i)?;
-                    }
-                    "--fps" => {
-                        config.fps = parse_next_argument(&args, &mut i)?;
-                    }
-
-                    "--background-char" => {
-                        config.background_colchar.text_char = parse_next_argument(&args, &mut i)?;
-                    }
-                    // TODO: background_colour
-
-                    "--show-benchmark" => config.show_benchmark = true,
-                    _ => return Err(String::from("Invalid argument")),
-                }
-            }
-        }
-
-        Ok(config)
+    pub fn get_transform(&self) -> Transform3D {
+        Transform3D::new_tr(self.translation, self.rotation)
     }
 }
