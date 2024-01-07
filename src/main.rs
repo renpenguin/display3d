@@ -26,7 +26,7 @@ fn main() {
     );
 
     let mut root = Root::new(
-        ScaleFitView::new(config.get_background_char()),
+        ScaleFitView::new(config.get_background_char()).with_empty_row_count(2),
         config.fov,
         config.get_transform(),
         models,
