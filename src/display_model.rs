@@ -1,17 +1,14 @@
 use std::time::{Duration, Instant};
 
 use gemini_engine::{
-    elements::{
-        view::{utils::get_termsize_as_vec2d, Wrapping},
-        View,
-    },
+    elements::view::{ScaleFitView, Wrapping},
     elements3d::{DisplayMode, Mesh3D, Transform3D, Viewport},
     gameloop::{sleep_fps, MainLoopRoot},
 };
 
 #[allow(dead_code)]
 pub struct Root {
-    view: View,
+    canvas: ScaleFitView,
     viewport: Viewport,
     display_mode: DisplayMode,
     models: Vec<Mesh3D>,
@@ -23,16 +20,16 @@ pub struct Root {
 
 impl Root {
     pub fn new(
-        canvas: View,
+        canvas: ScaleFitView,
         fov: f64,
         initial_viewport_transform: Transform3D,
         models: Vec<Mesh3D>,
         display_mode: DisplayMode,
         show_benchmark: bool,
     ) -> Root {
-        let viewport_center = canvas.center();
+        let viewport_center = canvas.intended_size() / 2;
         Root {
-            view: canvas,
+            canvas,
             viewport: Viewport::new(initial_viewport_transform, fov, viewport_center),
             display_mode,
             models,
@@ -51,16 +48,13 @@ impl MainLoopRoot for Root {
 
     fn render_frame(&mut self) {
         // Auto-resize
-        let term_size = get_termsize_as_vec2d().expect("Failed to get terminal size");
-        self.view.width = term_size.x as usize;
-        self.view.height = term_size.y as usize - 3;
-        self.viewport.origin = self.view.center();
-        self.view.clear();
+        self.viewport.origin = self.canvas.intended_size() / 2;
+        self.canvas.update();
 
         let now = Instant::now();
 
         // let objects: Vec<&dyn ViewElement3D> = ;
-        self.view.blit(
+        self.canvas.view.blit(
             &self.viewport.render(
                 self.models.iter().map(|m| m as _).collect(),
                 self.display_mode.clone(),
@@ -71,7 +65,7 @@ impl MainLoopRoot for Root {
         self.elapsed_blitting = now.elapsed();
 
         let now = Instant::now();
-        self.view.display_render().unwrap();
+        self.canvas.view.display_render().unwrap();
         self.elapsed_rendering = now.elapsed();
     }
 

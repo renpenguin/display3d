@@ -1,10 +1,12 @@
+use clap::Parser;
+use gemini_engine::{
+    elements::view::ScaleFitView,
+    elements3d::{DisplayMode, Light, Vec3D},
+    gameloop::MainLoopRoot,
+};
 use std::process;
 
-use clap::Parser;
 use display3d::{Config, ModelFile, Root};
-use gemini_engine::elements::view::View;
-use gemini_engine::elements3d::{DisplayMode, Light, Vec3D};
-use gemini_engine::gameloop::MainLoopRoot;
 
 fn main() {
     let config = Config::parse();
@@ -24,7 +26,7 @@ fn main() {
     );
 
     let mut root = Root::new(
-        View::new(0, 0, config.get_background_char()),
+        ScaleFitView::new(config.get_background_char()),
         config.fov,
         config.get_transform(),
         models,
