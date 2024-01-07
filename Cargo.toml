@@ -8,6 +8,6 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.4.13", features = ["derive"] }
-gemini-engine = "0.10.1"
+gemini-engine = { path = "../gemini" }
 stl_io = "0.7.0"
 tobj = "4.0.0"
