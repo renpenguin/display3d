@@ -53,7 +53,6 @@ impl MainLoopRoot for Root {
 
         let now = Instant::now();
 
-        // let objects: Vec<&dyn ViewElement3D> = ;
         self.canvas.view.blit(
             &self.viewport.render(
                 self.models.iter().map(|m| m as _).collect(),
