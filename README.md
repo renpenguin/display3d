@@ -2,6 +2,8 @@ A command line interface to display and animate 3D objects using ANSI escape cod
 
 For a basic guide on how to use the tool, run `display3d --help`
 
+https://github.com/redpenguinyt/display3d/assets/79577742/da94ce08-f150-4c88-9c83-20ebcd6a2ef0
+
 ## Supported formats
 - .obj (combined with .mtl for colours)
 - .stl
@@ -16,4 +18,4 @@ Clone this repository with `git clone https://github.com/redpenguinyt/display3d.
 Make sure you have [rust and cargo](https://www.rust-lang.org/tools/install) installed, and build the project with `cargo build --release`. The binary will be saved to `<project-repo>/target/release/display3d`
 
 # Example
-To run the example spinning shark, run `cargo run --release -- resources/blahaj.obj -t 0,0,5.5`
+To run the example spinning shark, run `cargo run --release -- resources/blahaj.obj -t 0,0,5.5` or `display3d resources/blahaj.obj -t 0,0,5.5` if you're using the compiled version
