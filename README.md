@@ -2,7 +2,7 @@ A command line interface to display and animate 3D objects using ANSI escape cod
 
 For a basic guide on how to use the tool, run `display3d --help`
 
-https://github.com/redpenguinyt/display3d/assets/79577742/da94ce08-f150-4c88-9c83-20ebcd6a2ef0
+https://github.com/redpenguinyt/display3d/assets/79577742/7c37fdaf-bb30-4f3e-9d3b-215b1d8e5cf9
 
 ## Supported formats
 - .obj (combined with .mtl for colours)
