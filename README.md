@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/github/stars/redpenguinyt/display3d?color=%2300e7&style=for-the-badge">
 </div>
 
-https://github.com/redpenguinyt/display3d/assets/79577742/7c37fdaf-bb30-4f3e-9d3b-215b1d8e5cf9
+[video example](https://github.com/redpenguinyt/display3d/assets/79577742/7c37fdaf-bb30-4f3e-9d3b-215b1d8e5cf9)
 
 A command line interface to display and animate 3D objects using ANSI escape codes, written using [gemini-engine](https://crates.io/crates/gemini-engine) in the Rust programming language
 
