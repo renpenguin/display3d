@@ -30,7 +30,7 @@ pub struct Config {
     /// Character used by the background
     #[arg(long, default_value_t = ' ')]
     pub background_char: char,
-    /// ANSI Code to modify background, see https://wikipedia.org/wiki/ANSI_escape_code#Colors
+    /// ANSI Code to modify background, see <https://wikipedia.org/wiki/ANSI_escape_code#Colors>
     #[arg(short, long, default_value_t = 0)]
     pub background_modifier_code: u8,
 
