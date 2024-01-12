@@ -6,7 +6,7 @@ use gemini_engine::{
 };
 use std::process;
 
-use display3d::{Config, ModelFile, Root};
+use display3d::{shaders::MultiShader, Config, ModelFile, Root};
 
 fn main() {
     let config = Config::parse();
@@ -36,6 +36,7 @@ fn main() {
                 Light::new_directional(0.4, Vec3D::new(-2.0, -1.0, 3.0)),
             ],
         },
+        MultiShader::None,
         config.show_benchmark,
     );
 

@@ -1,7 +1,10 @@
 use std::time::{Duration, Instant};
 
 use gemini_engine::{
-    elements::view::{ScaleFitView, Wrapping},
+    elements::{
+        containers::CanShade,
+        view::{ScaleFitView, Wrapping},
+    },
     elements3d::{DisplayMode, Mesh3D, Transform3D, Viewport},
     gameloop::{sleep_fps, MainLoopRoot},
 };
@@ -10,8 +13,9 @@ use gemini_engine::{
 pub struct Root {
     canvas: ScaleFitView,
     viewport: Viewport,
-    display_mode: DisplayMode,
     models: Vec<Mesh3D>,
+    display_mode: DisplayMode,
+    shader: Box<dyn CanShade>,
     // Timing stats
     show_benchmark: bool,
     elapsed_blitting: Duration,
@@ -25,14 +29,16 @@ impl Root {
         initial_viewport_transform: Transform3D,
         models: Vec<Mesh3D>,
         display_mode: DisplayMode,
+        shader: impl CanShade + 'static,
         show_benchmark: bool,
     ) -> Root {
         let viewport_center = canvas.intended_size() / 2;
         Root {
             canvas,
             viewport: Viewport::new(initial_viewport_transform, fov, viewport_center),
-            display_mode,
             models,
+            display_mode,
+            shader: Box::new(shader),
             show_benchmark,
             elapsed_blitting: Duration::ZERO,
             elapsed_rendering: Duration::ZERO,
@@ -42,6 +48,7 @@ impl Root {
 
 impl MainLoopRoot for Root {
     type InputDataType = u8;
+
     fn frame(&mut self, _input_data: Option<Self::InputDataType>) {
         self.viewport.transform.rotation.y += 0.05;
     }
@@ -54,10 +61,13 @@ impl MainLoopRoot for Root {
         let now = Instant::now();
 
         self.canvas.view.blit(
-            &self.viewport.render(
-                self.models.iter().map(|m| m as _).collect(),
-                self.display_mode.clone(),
-            ),
+            &self
+                .viewport
+                .render(
+                    self.models.iter().map(|m| m as _).collect(),
+                    self.display_mode.clone(),
+                )
+                .shade_with(&mut self.shader),
             Wrapping::Ignore,
         );
 
