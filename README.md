@@ -30,4 +30,4 @@ Clone this repository with `git clone https://github.com/redpenguinyt/display3d.
 Build the project with `cargo build --release`. The binary will be saved to `<project-repo>/target/release/display3d`
 
 # Example
-To run the example spinning shark, run `display3d resources/blahaj.obj -t 0,0,5.5`
+To run the example spinning shark, run `display3d blahaj.obj -t 0,0,5.5`. You can get the `blahaj.obj` and `blahaj.mtl` (for colours, should be stored together with `blahaj.obj`) files in [the resource folder](https://github.com/redpenguinyt/display3d/tree/master/resources) of this repository.
