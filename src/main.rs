@@ -6,7 +6,15 @@ use gemini_engine::{
 };
 use std::process;
 
-use display3d::{shaders::MultiShader, Config, ModelFile, Root};
+mod config;
+mod convert_to_mesh3d;
+mod display_model;
+mod shaders;
+
+pub use config::Config;
+pub use convert_to_mesh3d::ModelFile;
+pub use display_model::Root;
+pub use shaders::MultiShader;
 
 fn main() {
     let config = Config::parse();
