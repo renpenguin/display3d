@@ -13,7 +13,7 @@ pub struct Config {
     pub filepath: String,
 
     /// The translation of the viewport/camera
-    #[arg(short, long, default_value_t = Vec3D::new(0.0,-0.5,3.0))]
+    #[arg(short, long, default_value_t = Vec3D::new(0.0,-0.5,5.0))]
     pub translation: Vec3D,
 
     /// The rotation of the viewport/camera
