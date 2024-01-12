@@ -7,7 +7,11 @@ use std::{fs::OpenOptions, path::Path};
 pub fn stl_to_mesh3d(filepath: &Path) -> Mesh3D {
     let mut file = OpenOptions::new().read(true).open(filepath).unwrap();
     let mut stl = stl_io::create_stl_reader(&mut file).unwrap();
-    let indexed_mesh = stl.as_indexed_triangles().unwrap();
+    let mut indexed_mesh = stl.as_indexed_triangles().unwrap();
+    indexed_mesh
+        .faces
+        .iter_mut()
+        .for_each(|face| face.vertices.reverse()); // Flip normals
 
     Mesh3D::new(
         Transform3D::default(),
