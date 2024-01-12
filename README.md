@@ -19,10 +19,15 @@ Please note that this form of rendering requires the terminal to support ANSI es
 
 # Installing
 
+Make sure you have [rust and cargo](https://www.rust-lang.org/tools/install) installed before proceeding with either of these methods
+
+## Install with cargo (recommended)
+Run `cargo install display3d`. This will download, compile and install the latest stable release of display3d. You can then simply run `display3d` to access it
+
 ## Compile from source
 Clone this repository with `git clone https://github.com/redpenguinyt/display3d.git` or download and extract this repository.
 
-Make sure you have [rust and cargo](https://www.rust-lang.org/tools/install) installed, and build the project with `cargo build --release`. The binary will be saved to `<project-repo>/target/release/display3d`
+Build the project with `cargo build --release`. The binary will be saved to `<project-repo>/target/release/display3d`
 
 # Example
 To run the example spinning shark, run `cargo run --release -- resources/blahaj.obj -t 0,0,5.5` or `display3d resources/blahaj.obj -t 0,0,5.5` if you're using the compiled version
