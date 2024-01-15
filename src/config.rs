@@ -35,9 +35,14 @@ pub struct Config {
     pub background_modifier_code: u8,
 
     // Debug
+
     /// Whether to show render times below the rendered image
     #[arg(long, default_value_t = false)]
     pub show_benchmark: bool,
+
+    /// How many frames to stop rendering after. Set to 0 to disable (this is the default)
+    #[arg(long, default_value_t = 0)]
+    pub stop_after: usize
 }
 
 impl Config {

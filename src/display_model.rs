@@ -9,6 +9,9 @@ use gemini_engine::{
     gameloop::{sleep_fps, MainLoopRoot},
 };
 
+mod debug_manager;
+pub use debug_manager::DebugManager;
+
 #[allow(dead_code)]
 pub struct Root {
     canvas: ScaleFitView,
@@ -16,10 +19,8 @@ pub struct Root {
     models: Vec<Mesh3D>,
     display_mode: DisplayMode,
     shader: Box<dyn CanShade>,
-    // Timing stats
-    show_benchmark: bool,
-    elapsed_blitting: Duration,
-    elapsed_rendering: Duration,
+    // Debug
+    debug_manager: DebugManager,
 }
 
 impl Root {
@@ -30,7 +31,7 @@ impl Root {
         models: Vec<Mesh3D>,
         display_mode: DisplayMode,
         shader: impl CanShade + 'static,
-        show_benchmark: bool,
+        debug_manager: DebugManager
     ) -> Root {
         let viewport_center = canvas.intended_size() / 2;
         Root {
@@ -39,9 +40,7 @@ impl Root {
             models,
             display_mode,
             shader: Box::new(shader),
-            show_benchmark,
-            elapsed_blitting: Duration::ZERO,
-            elapsed_rendering: Duration::ZERO,
+            debug_manager,
         }
     }
 }
@@ -71,11 +70,13 @@ impl MainLoopRoot for Root {
             Wrapping::Ignore,
         );
 
-        self.elapsed_blitting = now.elapsed();
+        self.debug_manager.log_blitting_since(now);
 
         let now = Instant::now();
         self.canvas.view.display_render().unwrap();
-        self.elapsed_rendering = now.elapsed();
+        self.debug_manager.log_rendering_since(now);
+
+        self.debug_manager.frame();
     }
 
     fn sleep_and_get_input_data(
@@ -84,15 +85,7 @@ impl MainLoopRoot for Root {
         elapsed: Duration,
     ) -> (bool, Option<Self::InputDataType>) {
         // Hijack the sleep function to print elapsed times before falling back to default sleep function
-        if self.show_benchmark {
-            println!(
-                "Elapsed - Blitting: {:.2?}µs, Printing: {:.2?}µs, Total: {:.2?}µs, Using {:.2?}% of available time",
-                self.elapsed_blitting.as_micros(),
-                self.elapsed_rendering.as_micros(),
-                elapsed.as_micros(),
-                elapsed.as_micros() as f32 / Duration::from_secs_f32(1.0 / fps).as_micros() as f32 * 100.0
-            );
-        };
+        self.debug_manager.print_benchmark(fps, elapsed);
 
         (sleep_fps(fps, Some(elapsed)), None)
     }

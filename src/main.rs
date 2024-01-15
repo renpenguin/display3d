@@ -11,10 +11,12 @@ mod convert_to_mesh3d;
 mod display_model;
 mod shaders;
 
-pub use config::Config;
-pub use convert_to_mesh3d::ModelFile;
-pub use display_model::Root;
-pub use shaders::MultiShader;
+pub use crate::{
+    config::Config,
+    convert_to_mesh3d::ModelFile,
+    display_model::{DebugManager, Root},
+    shaders::MultiShader,
+};
 
 fn main() {
     let config = Config::parse();
@@ -45,7 +47,7 @@ fn main() {
             ],
         },
         MultiShader::None,
-        config.show_benchmark,
+        DebugManager::new(config.show_benchmark, config.stop_after),
     );
 
     root.main_loop(config.fps);
