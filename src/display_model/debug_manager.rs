@@ -34,7 +34,7 @@ impl DebugManager {
         if self.stop_after != 0 {
             self.frame += 1;
             if self.frame >= self.stop_after {
-				self.print_benchmark(0.0, self.elapsed_blitting + self.elapsed_rendering);
+                self.print_benchmark(0.0, self.elapsed_blitting + self.elapsed_rendering);
                 process::exit(0)
             }
         }

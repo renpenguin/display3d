@@ -6,7 +6,13 @@ use gemini_engine::{
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
-#[command(author, version, about, long_about = "None", allow_hyphen_values = true)]
+#[command(
+    author,
+    version,
+    about,
+    long_about = None,
+    allow_hyphen_values = true
+)]
 pub struct Config {
     /// The filepath of the 3D model
     #[arg()]
@@ -35,14 +41,13 @@ pub struct Config {
     pub background_modifier_code: u8,
 
     // Debug
-
     /// Whether to show render times below the rendered image
     #[arg(long, default_value_t = false)]
     pub show_benchmark: bool,
 
     /// How many frames to stop rendering after. Set to 0 to disable (this is the default)
     #[arg(long, default_value_t = 0)]
-    pub stop_after: usize
+    pub stop_after: usize,
 }
 
 impl Config {

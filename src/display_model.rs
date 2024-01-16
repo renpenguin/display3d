@@ -31,7 +31,7 @@ impl Root {
         models: Vec<Mesh3D>,
         display_mode: DisplayMode,
         shader: impl CanShade + 'static,
-        debug_manager: DebugManager
+        debug_manager: DebugManager,
     ) -> Root {
         let viewport_center = canvas.intended_size() / 2;
         Root {
