@@ -6,7 +6,7 @@ use gemini_engine::{
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
-#[command(author, version, about, long_about = "None")]
+#[command(author, version, about, long_about = "None", allow_hyphen_values = true)]
 pub struct Config {
     /// The filepath of the 3D model
     #[arg()]
