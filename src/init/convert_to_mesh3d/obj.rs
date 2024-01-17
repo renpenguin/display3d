@@ -6,10 +6,12 @@ use gemini_engine::{
 };
 use tobj::{Material, Model};
 
+const NO_MATERIAL_COLOUR: [f32; 3] = [1.0, 0.0, 1.0];
+
 fn get_material_as_col_char(materials: &[Material], material_id: Option<usize>) -> ColChar {
     let colour_rgb = match material_id {
-        Some(material_id) => materials[material_id].diffuse.unwrap(),
-        None => [1.0, 0.0, 1.0],
+        Some(id) => materials[id].diffuse.unwrap_or(NO_MATERIAL_COLOUR),
+        None => NO_MATERIAL_COLOUR,
     };
 
     ColChar::SOLID.with_rgb(
@@ -68,18 +70,22 @@ pub fn model_to_mesh3d(model: &Model, materials: &[Material]) -> Mesh3D {
     Mesh3D::new(Transform3D::DEFAULT, vertices, faces)
 }
 
-pub fn obj_to_mesh3ds(models: Vec<Model>, materials: Vec<Material>) -> Vec<Mesh3D> {
-    models
+pub fn obj_to_mesh3ds(filepath: &Path) -> Result<Vec<Mesh3D>, String> {
+    let (models, materials) = get_obj_from_file(filepath)?;
+
+    Ok(models
         .iter()
         .map(|model| model_to_mesh3d(model, &materials))
-        .collect()
+        .collect())
 }
 
-pub fn get_obj_from_file(obj_filepath: &Path) -> (Vec<Model>, Vec<Material>) {
+pub fn get_obj_from_file(obj_filepath: &Path) -> Result<(Vec<Model>, Vec<Material>), String> {
     let load_options = tobj::LoadOptions::default();
+
     let (models, materials) =
-        tobj::load_obj(obj_filepath, &load_options).expect("Failed to OBJ load file");
+        tobj::load_obj(obj_filepath, &load_options).map_err(super::error_to_string)?;
+
     let materials = materials.unwrap_or(vec![]);
 
-    (models, materials)
+    Ok((models, materials))
 }

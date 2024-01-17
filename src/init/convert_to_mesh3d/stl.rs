@@ -4,16 +4,19 @@ use gemini_engine::{
 };
 use std::{fs::OpenOptions, path::Path};
 
-pub fn stl_to_mesh3d(filepath: &Path) -> Mesh3D {
-    let mut file = OpenOptions::new().read(true).open(filepath).unwrap();
-    let mut stl = stl_io::create_stl_reader(&mut file).unwrap();
-    let mut indexed_mesh = stl.as_indexed_triangles().unwrap();
+pub fn stl_to_mesh3d(filepath: &Path) -> Result<Mesh3D, String> {
+    let mut file = OpenOptions::new()
+        .read(true)
+        .open(filepath)
+        .map_err(super::error_to_string)?;
+    let mut stl = stl_io::create_stl_reader(&mut file).map_err(super::error_to_string)?;
+    let mut indexed_mesh = stl.as_indexed_triangles().map_err(super::error_to_string)?;
     indexed_mesh
         .faces
         .iter_mut()
         .for_each(|face| face.vertices.reverse()); // Flip normals
 
-    Mesh3D::new(
+    Ok(Mesh3D::new(
         Transform3D::default(),
         indexed_mesh
             .vertices
@@ -25,5 +28,5 @@ pub fn stl_to_mesh3d(filepath: &Path) -> Mesh3D {
             .iter()
             .map(|f| Face::new(f.vertices.to_vec(), ColChar::SOLID))
             .collect(),
-    )
+    ))
 }

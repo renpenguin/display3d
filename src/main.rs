@@ -20,13 +20,20 @@ fn main() {
     let config = Config::parse();
 
     let model_file = match ModelFile::new(&config.filepath) {
-        Ok(model) => model,
+        Ok(file) => file,
         Err(e) => {
             eprintln!("An error occurred while parsing the file: {e}");
             process::exit(1);
         }
     };
-    let models = model_file.to_mesh3ds();
+
+    let models = match model_file.to_mesh3ds() {
+        Ok(models) => models,
+        Err(e) => {
+            eprintln!("An error occured while converting the parsed file: {e}");
+            process::exit(1);
+        }
+    };
 
     println!(
         "Parsed model for a total of {} faces. Displaying...",

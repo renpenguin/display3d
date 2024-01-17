@@ -4,6 +4,10 @@ mod stl;
 use gemini_engine::elements3d::Mesh3D;
 use std::path::Path;
 
+fn error_to_string<E: ToString>(error: E) -> String {
+    error.to_string()
+}
+
 pub enum ModelFileType {
     Obj,
     Stl,
@@ -12,10 +16,14 @@ pub enum ModelFileType {
 impl ModelFileType {
     pub fn from_filepath(filepath: &Path) -> Result<ModelFileType, String> {
         if let Some(file_extension) = filepath.extension() {
-            match file_extension.to_str().unwrap() {
-                "obj" => Ok(ModelFileType::Obj),
-                "stl" => Ok(ModelFileType::Stl),
-                _ => Err(String::from("Filetype not supported")),
+            if let Some(extension) = file_extension.to_str() {
+                match extension {
+                    "obj" => Ok(ModelFileType::Obj),
+                    "stl" => Ok(ModelFileType::Stl),
+                    _ => Err(String::from("Filetype not supported")),
+                }
+            } else {
+                Err(String::from("File extension is not a valid OsStr"))
             }
         } else {
             Err(String::from("Missing file extension"))
@@ -36,16 +44,14 @@ impl<'a> ModelFile<'a> {
         Ok(ModelFile { filepath, filetype })
     }
 
-    pub fn to_mesh3ds(&self) -> Vec<Mesh3D> {
+    pub fn to_mesh3ds(&self) -> Result<Vec<Mesh3D>, String> {
         match self.filetype {
             ModelFileType::Obj => {
-                let (models, materials) = obj::get_obj_from_file(self.filepath);
-
-                obj::obj_to_mesh3ds(models, materials)
+                obj::obj_to_mesh3ds(self.filepath)
             }
 
             ModelFileType::Stl => {
-                vec![stl::stl_to_mesh3d(self.filepath)]
+                Ok(vec![stl::stl_to_mesh3d(self.filepath)?])
             }
         }
     }
