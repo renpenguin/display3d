@@ -11,8 +11,8 @@ mod init;
 mod shaders;
 
 pub use crate::{
-    init::{Config, ModelFile},
     display_model::{DebugManager, Root},
+    init::{Config, ModelFile},
     shaders::MultiShader,
 };
 
