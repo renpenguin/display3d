@@ -79,7 +79,7 @@ pub fn get_obj_from_file(obj_filepath: &Path) -> (Vec<Model>, Vec<Material>) {
     let load_options = tobj::LoadOptions::default();
     let (models, materials) =
         tobj::load_obj(obj_filepath, &load_options).expect("Failed to OBJ load file");
-    let materials = materials.unwrap_or(vec![]); // TODO: fallback to MTL_FILEPATH
+    let materials = materials.unwrap_or(vec![]);
 
     (models, materials)
 }
