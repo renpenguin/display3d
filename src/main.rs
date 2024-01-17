@@ -6,14 +6,12 @@ use gemini_engine::{
 };
 use std::process;
 
-mod config;
-mod convert_to_mesh3d;
 mod display_model;
+mod init;
 mod shaders;
 
 pub use crate::{
-    config::Config,
-    convert_to_mesh3d::ModelFile,
+    init::{Config, ModelFile},
     display_model::{DebugManager, Root},
     shaders::MultiShader,
 };
@@ -50,17 +48,7 @@ fn main() {
         DebugManager::new(config.show_benchmark, config.stop_after),
     );
 
-    disable_cursor_blink();
+    init::disable_cursor_blink();
 
     root.main_loop(config.fps);
-}
-
-fn disable_cursor_blink() {
-    ctrlc::set_handler(move || {
-        println!("\x1b[?25h");
-        process::exit(0);
-    })
-    .expect("Error setting Ctrl-C handler");
-
-    print!("\x1b[?25l");
 }
