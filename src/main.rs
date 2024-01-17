@@ -44,7 +44,7 @@ fn main() {
                 Light::new_directional(0.4, Vec3D::new(-2.0, -1.0, 3.0)),
             ],
         },
-        MultiShader::None,
+        config.shader,
         DebugManager::new(config.show_benchmark, config.stop_after),
     );
 

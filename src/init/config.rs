@@ -4,6 +4,8 @@ use gemini_engine::{
     elements3d::{Transform3D, Vec3D},
 };
 
+use crate::MultiShader;
+
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
 #[command(
@@ -32,6 +34,11 @@ pub struct Config {
     /// The FPS at which the animation should run
     #[arg(long, default_value_t = 60.0)]
     pub fps: f32,
+
+    /// Select a shader to apply to the model!
+    /// Options: none, invert, solid, flat-<r>,<g>,<b>
+    #[arg(long, default_value_t = MultiShader::None)]
+    pub shader: MultiShader,
 
     /// Character used by the background
     #[arg(long, default_value_t = ' ')]
