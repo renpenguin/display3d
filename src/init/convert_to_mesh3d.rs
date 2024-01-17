@@ -46,13 +46,9 @@ impl<'a> ModelFile<'a> {
 
     pub fn to_mesh3ds(&self) -> Result<Vec<Mesh3D>, String> {
         match self.filetype {
-            ModelFileType::Obj => {
-                obj::obj_to_mesh3ds(self.filepath)
-            }
+            ModelFileType::Obj => obj::obj_to_mesh3ds(self.filepath),
 
-            ModelFileType::Stl => {
-                Ok(vec![stl::stl_to_mesh3d(self.filepath)?])
-            }
+            ModelFileType::Stl => Ok(vec![stl::stl_to_mesh3d(self.filepath)?]),
         }
     }
 }
