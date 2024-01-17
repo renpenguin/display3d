@@ -50,5 +50,17 @@ fn main() {
         DebugManager::new(config.show_benchmark, config.stop_after),
     );
 
+    disable_cursor_blink();
+
     root.main_loop(config.fps);
+}
+
+fn disable_cursor_blink() {
+    ctrlc::set_handler(move || {
+        println!("\x1b[?25h");
+        process::exit(0);
+    })
+    .expect("Error setting Ctrl-C handler");
+
+    print!("\x1b[?25l");
 }
