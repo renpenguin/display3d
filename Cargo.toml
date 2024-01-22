@@ -13,4 +13,4 @@ clap = { version = "4.4.13", features = ["derive"] }
 ctrlc = "3.4.2"
 gemini-engine = "0.11.2"
 stl_io = "0.7.0"
-tobj = "4.0"
+tobj = "4.0.1"
