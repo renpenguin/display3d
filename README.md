@@ -12,7 +12,7 @@ A command line interface to display and animate 3D objects using ANSI escape cod
 For a basic guide on how to use the tool, run `display3d --help`
 
 # Supported formats
-- .obj (combined with .mtl for colours)
+- .obj (combined with .mtl for colours). If you're exporting from Blender, set the forward axis to +Z and the up axis to +Y
 - .stl
 
 Please note that this form of rendering requires the terminal to support ANSI escape codes, support for which tends to be unreliable on Windows from installation to installation. If you are having issues getting an image on Linux or MacOS, please submit an issue request
