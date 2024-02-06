@@ -14,3 +14,12 @@ ctrlc = "3.4.2"
 gemini-engine = "0.13.0"
 stl_io = "0.7.0"
 tobj = "4.0.1"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+enum_glob_use = "warn"
+pedantic = "warn"
+nursery = "warn"
+unwrap_used = "warn"
