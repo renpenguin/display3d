@@ -43,7 +43,7 @@ impl DebugManager {
     pub fn print_benchmark(&self, fps: f32, total_elapsed: Duration) {
         if self.show_benchmark {
             println!(
-                "Elapsed - Blitting: {:.2?}µs, Printing: {:.2?}µs, Total: {:.2?}µs, Using {:.2?}% of available time",
+                "Elapsed - Blitting: {:>5}µs, Printing: {:>5}µs, Total: {:>5}µs, Using {:>5.2?}% of available time per frame",
                 self.elapsed_blitting.as_micros(),
                 self.elapsed_rendering.as_micros(),
                 total_elapsed.as_micros(),
