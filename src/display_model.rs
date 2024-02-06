@@ -35,11 +35,14 @@ impl Root {
     ) -> Root {
         let viewport_center = canvas.intended_size() / 2;
 
-        let models = models.into_iter().map(|m| {
-            let mut m = m;
-            m.transform *= -initial_viewport_transform;
-            m
-        }).collect();
+        let models = models
+            .into_iter()
+            .map(|m| {
+                let mut m = m;
+                m.transform *= -initial_viewport_transform;
+                m
+            })
+            .collect();
 
         Root {
             canvas,
