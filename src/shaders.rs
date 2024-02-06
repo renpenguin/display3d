@@ -16,7 +16,7 @@ pub enum MultiShader {
 
 impl Display for MultiShader {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", format!("{:?}", self).to_lowercase())
+        write!(f, "{}", format!("{self:?}").to_lowercase())
     }
 }
 
@@ -25,14 +25,14 @@ impl FromStr for MultiShader {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "none" => Ok(MultiShader::None),
-            "invert" => Ok(MultiShader::Invert),
+            "none" => Ok(Self::None),
+            "invert" => Ok(Self::Invert),
             s if s.starts_with("flat-") => {
                 let colour: Colour = s.replace("flat-", "").parse()?;
 
-                Ok(MultiShader::FlatColour(colour))
+                Ok(Self::FlatColour(colour))
             }
-            "solid" => Ok(MultiShader::Solid),
+            "solid" => Ok(Self::Solid),
             _ => Err(String::from("Invalid shader name")),
         }
     }
@@ -41,8 +41,8 @@ impl FromStr for MultiShader {
 impl CanShade for MultiShader {
     fn shade(&mut self, pixel: Pixel) -> Pixel {
         match self {
-            MultiShader::None => pixel,
-            MultiShader::Invert => {
+            Self::None => pixel,
+            Self::Invert => {
                 let modifier = match pixel.fill_char.modifier {
                     Modifier::Colour(colour) => {
                         Modifier::from_rgb(255 - colour.r, 255 - colour.g, 255 - colour.b)
@@ -52,13 +52,11 @@ impl CanShade for MultiShader {
 
                 Pixel::new(pixel.pos, ColChar::new(pixel.fill_char.text_char, modifier))
             }
-            MultiShader::FlatColour(colour) => Pixel::new(
+            Self::FlatColour(colour) => Pixel::new(
                 pixel.pos,
                 ColChar::new(pixel.fill_char.text_char, Modifier::Colour(*colour)),
             ),
-            MultiShader::Solid => {
-                Pixel::new(pixel.pos, ColChar::SOLID.with_mod(pixel.fill_char.modifier))
-            }
+            Self::Solid => Pixel::new(pixel.pos, ColChar::SOLID.with_mod(pixel.fill_char.modifier)),
         }
     }
 }

@@ -12,8 +12,9 @@ pub struct DebugManager {
 }
 
 impl DebugManager {
-    pub fn new(show_benchmark: bool, stop_after: usize) -> DebugManager {
-        DebugManager {
+    #[must_use]
+    pub const fn new(show_benchmark: bool, stop_after: usize) -> Self {
+        Self {
             show_benchmark,
             stop_after,
             elapsed_blitting: Duration::ZERO,

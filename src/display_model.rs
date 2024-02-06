@@ -32,7 +32,7 @@ impl Root {
         display_mode: DisplayMode,
         shader: impl CanShade + 'static,
         debug_manager: DebugManager,
-    ) -> Root {
+    ) -> Self {
         let viewport_center = canvas.intended_size() / 2;
 
         let models = models
@@ -44,7 +44,7 @@ impl Root {
             })
             .collect();
 
-        Root {
+        Self {
             canvas,
             viewport: Viewport::new(Transform3D::default(), fov, viewport_center),
             models,
@@ -59,7 +59,7 @@ impl MainLoopRoot for Root {
     type InputDataType = u8;
 
     fn frame(&mut self, _input_data: Option<Self::InputDataType>) {
-        for model in self.models.iter_mut() {
+        for model in &mut self.models {
             model.transform.rotation.y += 0.05;
         }
     }
@@ -85,7 +85,7 @@ impl MainLoopRoot for Root {
         self.debug_manager.log_blitting_since(now);
 
         let now = Instant::now();
-        self.canvas.view.display_render().unwrap();
+        let _ = self.canvas.view.display_render();
         self.debug_manager.log_rendering_since(now);
 
         self.debug_manager.frame();

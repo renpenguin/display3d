@@ -58,14 +58,16 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn get_background_char(&self) -> ColChar {
+    #[must_use]
+    pub const fn get_background_char(&self) -> ColChar {
         ColChar::new(
             self.background_char,
             Modifier::Coded(self.background_modifier_code),
         )
     }
 
-    pub fn get_transform(&self) -> Transform3D {
+    #[must_use]
+    pub const fn get_transform(&self) -> Transform3D {
         Transform3D::new_tr(self.translation, self.rotation)
     }
 }
