@@ -34,9 +34,16 @@ impl Root {
         debug_manager: DebugManager,
     ) -> Root {
         let viewport_center = canvas.intended_size() / 2;
+
+        let models = models.into_iter().map(|m| {
+            let mut m = m;
+            m.transform *= -initial_viewport_transform;
+            m
+        }).collect();
+
         Root {
             canvas,
-            viewport: Viewport::new(initial_viewport_transform, fov, viewport_center),
+            viewport: Viewport::new(Transform3D::default(), fov, viewport_center),
             models,
             display_mode,
             shader: Box::new(shader),
@@ -49,7 +56,9 @@ impl MainLoopRoot for Root {
     type InputDataType = u8;
 
     fn frame(&mut self, _input_data: Option<Self::InputDataType>) {
-        self.viewport.transform.rotation.y += 0.05;
+        for model in self.models.iter_mut() {
+            model.transform.rotation.y += 0.05;
+        }
     }
 
     fn render_frame(&mut self) {

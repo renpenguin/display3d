@@ -11,6 +11,6 @@ repository = "https://github.com/redpenguinyt/display3d"
 [dependencies]
 clap = { version = "4.4.13", features = ["derive"] }
 ctrlc = "3.4.2"
-gemini-engine = "0.11.3"
+gemini-engine = "0.13.0"
 stl_io = "0.7.0"
 tobj = "4.0.1"

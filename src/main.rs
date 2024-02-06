@@ -48,7 +48,7 @@ fn main() {
         DisplayMode::Illuminated {
             lights: vec![
                 Light::new_ambient(0.6),
-                Light::new_directional(0.4, Vec3D::new(-2.0, -1.0, 3.0)),
+                Light::new_directional(0.4, Vec3D::new(2.0, -1.0, -3.0)),
             ],
         },
         config.shader,
