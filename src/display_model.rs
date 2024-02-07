@@ -75,7 +75,7 @@ impl MainLoopRoot for Root {
             &self
                 .viewport
                 .render(
-                    self.models.iter().map(|m| m as _).collect(),
+                    self.models.iter().collect(),
                     self.display_mode.clone(),
                 )
                 .shade_with(&mut self.shader),
