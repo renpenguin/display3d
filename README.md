@@ -1,8 +1,9 @@
 <div align="center">
   <h1><b>display3d</b></h1>
-  <img src="https://img.shields.io/github/last-commit/redpenguinyt/display3d?color=%23aa0000&style=for-the-badge">
-  <img src="https://img.shields.io/github/repo-size/redpenguinyt/display3d?color=%2300aa00&style=for-the-badge">
-  <img src="https://img.shields.io/github/stars/redpenguinyt/display3d?color=%2300e7&style=for-the-badge">
+  <img alt="Crates.io Version" src="https://img.shields.io/crates/v/display3d?style=for-the-badge">
+  <img src="https://img.shields.io/github/last-commit/redpenguinyt/display3d?style=for-the-badge">
+  <img src="https://img.shields.io/github/repo-size/redpenguinyt/display3d?style=for-the-badge">
+  <img src="https://img.shields.io/github/stars/redpenguinyt/display3d?color=e4b400&style=for-the-badge">
 </div>
 
 [video example](https://github.com/redpenguinyt/display3d/assets/79577742/7c37fdaf-bb30-4f3e-9d3b-215b1d8e5cf9)
