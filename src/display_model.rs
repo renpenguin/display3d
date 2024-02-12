@@ -5,7 +5,7 @@ use gemini_engine::{
         containers::CanShade,
         view::{ScaleFitView, Wrapping},
     },
-    elements3d::{DisplayMode, Mesh3D, Transform3D, Viewport},
+    elements3d::{DisplayMode, Mesh3D, Transform3D, Vec3D, Viewport},
     gameloop::{sleep_fps, MainLoopRoot},
 };
 
@@ -16,6 +16,7 @@ pub use debug_manager::DebugManager;
 pub struct Root {
     canvas: ScaleFitView,
     viewport: Viewport,
+    model_animation: Vec3D,
     models: Vec<Mesh3D>,
     display_mode: DisplayMode,
     shader: Box<dyn CanShade>,
@@ -27,7 +28,7 @@ impl Root {
     pub fn new(
         canvas: ScaleFitView,
         fov: f64,
-        initial_viewport_transform: Transform3D,
+        model_animation: Vec3D,
         models: Vec<Mesh3D>,
         display_mode: DisplayMode,
         shader: impl CanShade + 'static,
@@ -35,19 +36,11 @@ impl Root {
     ) -> Self {
         let viewport_center = canvas.intended_size() / 2;
 
-        let models = models
-            .into_iter()
-            .map(|m| {
-                let mut m = m;
-                m.transform *= -initial_viewport_transform;
-                m
-            })
-            .collect();
-
         Self {
             canvas,
             viewport: Viewport::new(Transform3D::default(), fov, viewport_center),
             models,
+            model_animation,
             display_mode,
             shader: Box::new(shader),
             debug_manager,
@@ -60,7 +53,7 @@ impl MainLoopRoot for Root {
 
     fn frame(&mut self, _input_data: Option<Self::InputDataType>) {
         for model in &mut self.models {
-            model.transform.rotation.y += 0.05;
+            model.transform.rotation += self.model_animation;
         }
     }
 
@@ -74,10 +67,7 @@ impl MainLoopRoot for Root {
         self.canvas.view.blit(
             &self
                 .viewport
-                .render(
-                    self.models.iter().collect(),
-                    self.display_mode.clone(),
-                )
+                .render(self.models.iter().collect(), self.display_mode.clone())
                 .shade_with(&mut self.shader),
             Wrapping::Ignore,
         );

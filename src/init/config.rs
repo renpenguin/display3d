@@ -20,13 +20,17 @@ pub struct Config {
     #[arg()]
     pub filepath: String,
 
-    /// The translation of the viewport/camera
+    /// The initial translation of the model
     #[arg(short, long, default_value_t = Vec3D::new(0.0,0.0,5.0))]
     pub translation: Vec3D,
 
-    /// The rotation of the viewport/camera
+    /// The initial rotation of the model
     #[arg(short, long, default_value_t = Vec3D::new(-0.2,0.0,0.0))]
     pub rotation: Vec3D,
+
+    /// The animation of the model's rotation. This is how much the model will rotate every frame, in each axis
+    #[arg(short, long, default_value_t = Vec3D::new(0.0,0.05,0.0))]
+    pub animation: Vec3D,
 
     /// The FOV of the viewport
     #[arg(long, default_value_t = 95.0)]

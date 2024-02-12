@@ -40,10 +40,20 @@ fn main() {
         models.iter().map(|m| m.faces.len()).sum::<usize>()
     );
 
+    // Apply global transform
+    let models = models
+    .into_iter()
+    .map(|m| {
+        let mut m = m;
+        m.transform *= -config.get_transform();
+        m
+    })
+    .collect();
+
     let mut root = Root::new(
         ScaleFitView::new(config.get_background_char()).with_empty_row_count(2),
         config.fov,
-        config.get_transform(),
+        config.animation,
         models,
         DisplayMode::Illuminated {
             lights: vec![
