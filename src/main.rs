@@ -42,13 +42,13 @@ fn main() {
 
     // Apply global transform
     let models = models
-    .into_iter()
-    .map(|m| {
-        let mut m = m;
-        m.transform *= -config.get_transform();
-        m
-    })
-    .collect();
+        .into_iter()
+        .map(|m| {
+            let mut m = m;
+            m.transform *= -config.get_transform();
+            m
+        })
+        .collect();
 
     let mut root = Root::new(
         ScaleFitView::new(config.get_background_char()).with_empty_row_count(2),

@@ -9,9 +9,9 @@ use tobj::{Material, Model};
 const NO_MATERIAL_COLOUR: [f32; 3] = [1.0, 0.0, 1.0];
 
 fn get_material_as_col_char(materials: &[Material], material_id: Option<usize>) -> ColChar {
-    let colour_rgb = material_id.map_or(NO_MATERIAL_COLOUR, |id| {
-        materials[id].diffuse.unwrap_or(NO_MATERIAL_COLOUR)
-    });
+    let colour_rgb = material_id
+        .and_then(|id| materials[id].diffuse)
+        .unwrap_or(NO_MATERIAL_COLOUR);
 
     ColChar::SOLID.with_rgb(
         (colour_rgb[0] * 255.0) as u8,

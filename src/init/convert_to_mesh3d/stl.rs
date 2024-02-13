@@ -9,7 +9,9 @@ pub fn to_mesh3d(filepath: &Path) -> Result<Mesh3D, String> {
         .read(true)
         .open(filepath)
         .map_err(|e| e.to_string())?;
+
     let mut stl = stl_io::create_stl_reader(&mut file).map_err(|e| e.to_string())?;
+
     let mut indexed_mesh = stl.as_indexed_triangles().map_err(|e| e.to_string())?;
 
     indexed_mesh

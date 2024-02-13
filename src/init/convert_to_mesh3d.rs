@@ -11,13 +11,13 @@ pub enum ModelFileType {
 
 impl ModelFileType {
     pub fn from_filepath(filepath: &Path) -> Result<Self, String> {
-        let file_extension = filepath
-            .extension()
-            .ok_or_else(|| String::from("Missing file extension"))?;
+        let Some(file_extension) = filepath.extension() else {
+            return Err(String::from("Missing file extension"));
+        };
 
-        let extension = file_extension
-            .to_str()
-            .ok_or_else(|| String::from("File extension is not a valid OsStr"))?;
+        let Some(extension) = file_extension.to_str() else {
+            return Err(String::from("File extension is not a valid OsStr"));
+        };
 
         match extension {
             "obj" => Ok(Self::Obj),
