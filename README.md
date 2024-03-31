@@ -6,7 +6,9 @@
   <img src="https://img.shields.io/github/stars/redpenguinyt/display3d?color=e4b400&style=for-the-badge">
 </div>
 
-[video example](https://github.com/redpenguinyt/display3d/assets/79577742/7c37fdaf-bb30-4f3e-9d3b-215b1d8e5cf9)
+[demo video of display3d](https://github.com/redpenguinyt/display3d/assets/79577742/6131167a-7b83-4c8e-96ec-c9715f3b4d23)
+
+
 
 display3d is a command line interface for rendering and animating 3D objects using ANSI escape codes, written using [gemini-engine](https://crates.io/crates/gemini-engine) in the Rust programming language.
 
