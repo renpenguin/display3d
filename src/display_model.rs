@@ -62,15 +62,6 @@ impl MainLoopRoot for Root {
         self.viewport.origin = self.canvas.intended_size() / 2;
         self.canvas.update();
 
-        if self.canvas.view.width == 0 || self.canvas.view.height == 0 {
-            eprintln!(
-                "The canvas size contains a 0 ({}), which is invalid",
-                self.canvas.view.size()
-            );
-            eprintln!("Terminal size: {:?}", termsize::get());
-            return;
-        }
-
         let now = Instant::now();
 
         self.canvas.view.blit(

@@ -11,9 +11,8 @@ repository = "https://github.com/redpenguinyt/display3d"
 [dependencies]
 clap = { version = "4.5.0", features = ["derive"] }
 ctrlc = "3.4.2"
-gemini-engine = "0.14.1"
+gemini-engine = "0.14.2"
 stl_io = "0.7.0"
-termsize = "0.1.6"
 tobj = "4.0.1"
 
 [lints.rust]
