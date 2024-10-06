@@ -36,6 +36,7 @@ impl DebugManager {
             self.frame += 1;
             if self.frame >= self.stop_after {
                 self.print_benchmark(0.0, self.elapsed_blitting + self.elapsed_rendering);
+                println!("\x1b[?25h");
                 process::exit(0)
             }
         }
