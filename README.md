@@ -8,13 +8,12 @@
 
 [demo video of display3d](https://github.com/redpenguinyt/display3d/assets/79577742/6131167a-7b83-4c8e-96ec-c9715f3b4d23)
 
-
-
 display3d is a command line interface for rendering and animating 3D objects using ANSI escape codes, written using [gemini-engine](https://crates.io/crates/gemini-engine) in the Rust programming language.
 
 For a basic guide on how to use the tool, run `display3d --help`
 
 # Supported formats
+
 - .obj (combined with .mtl for colours). If you're exporting from Blender, set the forward axis to +Z and the up axis to +Y
 - .stl
 
@@ -25,12 +24,15 @@ Please note that this form of rendering requires the terminal to support ANSI es
 Make sure you have [rust and cargo](https://www.rust-lang.org/tools/install) installed before proceeding with either of these methods
 
 ## Install with cargo (recommended)
+
 Run `cargo install display3d`. This will download, compile and install the latest stable release of display3d. You can then simply run `display3d` to access it
 
 ## Compile from source
+
 Clone this repository with `git clone https://github.com/redpenguinyt/display3d.git` or download and extract this repository.
 
 Build the project with `cargo build --release`. The binary will be saved to `<project-repo>/target/release/display3d`
 
 # Example
+
 To run the example spinning shark, run `display3d blahaj.obj -t 0,0,5.5`. You can get the `blahaj.obj` and `blahaj.mtl` (for colours, should be stored together with `blahaj.obj`) files in [the resource folder](https://github.com/redpenguinyt/display3d/tree/master/resources) of this repository.
