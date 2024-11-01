@@ -1,12 +1,12 @@
 <div align="center">
   <h1><b>display3d</b></h1>
   <img alt="Crates.io Version" src="https://img.shields.io/crates/v/display3d?style=for-the-badge">
-  <img src="https://img.shields.io/github/last-commit/redpenguinyt/display3d?style=for-the-badge">
-  <img src="https://img.shields.io/github/repo-size/redpenguinyt/display3d?style=for-the-badge">
-  <img src="https://img.shields.io/github/stars/redpenguinyt/display3d?color=e4b400&style=for-the-badge">
+  <img src="https://img.shields.io/github/last-commit/renpenguin/display3d?style=for-the-badge">
+  <img src="https://img.shields.io/github/repo-size/renpenguin/display3d?style=for-the-badge">
+  <img src="https://img.shields.io/github/stars/renpenguin/display3d?color=e4b400&style=for-the-badge">
 </div>
 
-[demo video of display3d](https://github.com/redpenguinyt/display3d/assets/79577742/6131167a-7b83-4c8e-96ec-c9715f3b4d23)
+[demo video of display3d](https://github.com/renpenguin/display3d/assets/79577742/6131167a-7b83-4c8e-96ec-c9715f3b4d23)
 
 display3d is a command line interface for rendering and animating 3D objects using ANSI escape codes, written using [gemini-engine](https://crates.io/crates/gemini-engine) in the Rust programming language.
 
@@ -29,10 +29,10 @@ Run `cargo install display3d`. This will download, compile and install the lates
 
 ## Compile from source
 
-Clone this repository with `git clone https://github.com/redpenguinyt/display3d.git` or download and extract this repository.
+Clone this repository with `git clone https://github.com/renpenguin/display3d.git` or download and extract this repository.
 
 Build the project with `cargo build --release`. The binary will be saved to `<project-repo>/target/release/display3d`
 
 # Example
 
-To run the example spinning shark, run `display3d blahaj.obj -t 0,0,5.5`. You can get the `blahaj.obj` and `blahaj.mtl` (for colours, should be stored together with `blahaj.obj`) files in [the resource folder](https://github.com/redpenguinyt/display3d/tree/master/resources) of this repository.
+To run the example spinning shark, run `display3d blahaj.obj -t 0,0,5.5`. You can get the `blahaj.obj` and `blahaj.mtl` (for colours, should be stored together with `blahaj.obj`) files in [the resource folder](https://github.com/renpenguin/display3d/tree/master/resources) of this repository.

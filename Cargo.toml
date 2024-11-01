@@ -1,10 +1,10 @@
 [package]
 name = "display3d"
 description = "A tool to display 3d objects in the terminal"
-version = "0.1.15"
+version = "0.1.16"
 edition = "2021"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/redpenguinyt/display3d"
+repository = "https://github.com/renpenguin/display3d"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

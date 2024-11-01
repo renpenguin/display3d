@@ -3,7 +3,7 @@ name: Bug report
 about: Report any bug or inconvenience you find!
 title: ''
 labels: bug
-assignees: redpenguinyt
+assignees: renpenguin
 
 ---
 
