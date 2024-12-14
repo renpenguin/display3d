@@ -21,13 +21,19 @@ Please note that this form of rendering requires the terminal to support ANSI es
 
 # Installing
 
+## Arch Linux
+
+[display3d](https://aur.archlinux.org/packages/display3d/) is available as a package in the [AUR](https://aur.archlinux.org/). You can install it using your preferred AUR helper, e.g. `paru -S display3d`.
+
+## Other
+
 Make sure you have [rust and cargo](https://www.rust-lang.org/tools/install) installed before proceeding with either of these methods
 
-## Install with cargo (recommended)
+### Cargo
 
 Run `cargo install display3d`. This will download, compile and install the latest stable release of display3d. You can then simply run `display3d` to access it
 
-## Compile from source
+### Compile from source
 
 Clone this repository with `git clone https://github.com/renpenguin/display3d.git` or download and extract this repository.
 
