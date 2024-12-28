@@ -1,25 +1,18 @@
-use std::{
-    process,
-    time::{Duration, Instant},
-};
+use std::time::{Duration, Instant};
 
 pub struct DebugManager {
-    pub show_benchmark: bool,
-    pub stop_after: usize,
-    pub elapsed_blitting: Duration,
-    pub elapsed_rendering: Duration,
-    pub frame: usize,
+    show_benchmark: bool,
+    elapsed_blitting: Duration,
+    elapsed_rendering: Duration,
 }
 
 impl DebugManager {
     #[must_use]
-    pub const fn new(show_benchmark: bool, stop_after: usize) -> Self {
+    pub const fn new(show_benchmark: bool) -> Self {
         Self {
             show_benchmark,
-            stop_after,
             elapsed_blitting: Duration::ZERO,
             elapsed_rendering: Duration::ZERO,
-            frame: 0,
         }
     }
 
@@ -29,17 +22,6 @@ impl DebugManager {
 
     pub fn log_rendering_since(&mut self, time: Instant) {
         self.elapsed_rendering = time.elapsed();
-    }
-
-    pub fn frame(&mut self) {
-        if self.stop_after != 0 {
-            self.frame += 1;
-            if self.frame >= self.stop_after {
-                self.print_benchmark(0.0, self.elapsed_blitting + self.elapsed_rendering);
-                println!("\x1b[?25h");
-                process::exit(0)
-            }
-        }
     }
 
     pub fn print_benchmark(&self, fps: f32, total_elapsed: Duration) {

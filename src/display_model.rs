@@ -77,8 +77,6 @@ impl MainLoopRoot for Root {
         let now = Instant::now();
         let _ = self.canvas.view.display_render();
         self.debug_manager.log_rendering_since(now);
-
-        self.debug_manager.frame();
     }
 
     fn sleep_and_get_input_data(

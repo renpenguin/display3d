@@ -62,8 +62,13 @@ fn main() {
             ],
         },
         config.shader,
-        DebugManager::new(config.show_benchmark, config.stop_after),
+        DebugManager::new(config.show_benchmark),
     );
+
+    if config.render_once {
+        root.render_frame();
+        return;
+    }
 
     init::disable_cursor_blink();
 

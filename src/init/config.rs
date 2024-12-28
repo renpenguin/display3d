@@ -56,9 +56,9 @@ pub struct Config {
     #[arg(long, default_value_t = false)]
     pub show_benchmark: bool,
 
-    /// How many frames to stop rendering after. Set to 0 to disable (this is the default)
-    #[arg(long, default_value_t = 0)]
-    pub stop_after: usize,
+    /// Render one frame, then exit
+    #[arg(long, default_value_t = false)]
+    pub render_once: bool,
 }
 
 impl Config {
