@@ -49,7 +49,7 @@ impl Root {
 }
 
 impl MainLoopRoot for Root {
-    type InputDataType = u8;
+    type InputDataType = ();
 
     fn frame(&mut self, _input_data: Option<Self::InputDataType>) {
         for model in &mut self.models {
@@ -87,6 +87,6 @@ impl MainLoopRoot for Root {
         // Hijack the sleep function to print elapsed times before falling back to default sleep function
         self.debug_manager.print_benchmark(fps, elapsed);
 
-        (sleep_fps(fps, Some(elapsed)), None)
+        (sleep_fps(fps, Some(elapsed)), Some(()))
     }
 }
