@@ -25,20 +25,20 @@ Please note that this form of rendering requires the terminal to support ANSI es
 
 [display3d](https://aur.archlinux.org/packages/display3d/) is available as a package in the [AUR](https://aur.archlinux.org/). You can install it using your preferred AUR helper, e.g. `paru -S display3d`.
 
-## Other
+## Nix/NixOS
 
-Make sure you have [rust and cargo](https://www.rust-lang.org/tools/install) installed before proceeding with either of these methods
+If you use Nix, you can install display3d from [nixpkgs](https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/di/ddisplay3d/default.nix). You can install it as `pkgs.display3d`
 
-### Cargo
+## Cargo
 
-Run `cargo install display3d`. This will download, compile and install the latest stable release of display3d. You can then simply run `display3d` to access it
+Make sure you have [rust and cargo](https://www.rust-lang.org/tools/install) installed, then run `cargo install display3d`. This will download, compile and install the latest stable release of display3d. You can then simply run `display3d` to access it
 
-### Compile from source
+## Compile from source
 
-Clone this repository with `git clone https://github.com/renpenguin/display3d.git` or download and extract this repository.
+Clone this repository with `git clone https://github.com/renpenguin/display3d.git` or download and unzip this repository. You must have [rust and cargo](https://www.rust-lang.org/tools/install) installed to compile display3d.
 
 Build the project with `cargo build --release`. The binary will be saved to `<project-repo>/target/release/display3d`
 
 # Example
 
-To run the example spinning shark, run `display3d blahaj.obj -t 0,0,5.5`. You can get the `blahaj.obj` and `blahaj.mtl` (for colours, should be stored together with `blahaj.obj`) files in [the resource folder](https://github.com/renpenguin/display3d/tree/master/resources) of this repository.
+To run the example spinning shark, run `display3d blahaj.obj -t 0,0,5.5`. You can get the `blahaj.obj` and `blahaj.mtl` (for colours, should be stored together with `blahaj.obj`) files in [the resource directory](https://github.com/renpenguin/display3d/tree/master/resources) of this repository.
