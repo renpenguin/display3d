@@ -1,11 +1,15 @@
+#[cfg(feature = "obj")]
 mod obj;
+#[cfg(feature = "stl")]
 mod stl;
 
 use gemini_engine::mesh3d::Mesh3D;
 use std::path::Path;
 
 pub enum ModelFileType {
+    #[cfg(feature = "obj")]
     Obj,
+    #[cfg(feature = "stl")]
     Stl,
 }
 
@@ -20,7 +24,9 @@ impl ModelFileType {
         };
 
         match extension {
+            #[cfg(feature = "obj")]
             "obj" => Ok(Self::Obj),
+            #[cfg(feature = "stl")]
             "stl" => Ok(Self::Stl),
             _ => Err(String::from("Filetype not supported")),
         }
@@ -46,8 +52,10 @@ impl<'a> ModelFile<'a> {
     /// Returns errors either from converting the obj or stl. These are presented as a printable string for reporting the issue directly to the user
     pub fn to_mesh3ds(&self) -> Result<Vec<Mesh3D>, String> {
         match self.filetype {
+            #[cfg(feature = "obj")]
             ModelFileType::Obj => obj::to_mesh3ds(self.filepath),
 
+            #[cfg(feature = "stl")]
             ModelFileType::Stl => Ok(vec![stl::to_mesh3d(self.filepath)?]),
         }
     }
