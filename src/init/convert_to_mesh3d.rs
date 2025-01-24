@@ -1,7 +1,7 @@
 mod obj;
 mod stl;
 
-use gemini_engine::elements3d::Mesh3D;
+use gemini_engine::mesh3d::Mesh3D;
 use std::path::Path;
 
 pub enum ModelFileType {

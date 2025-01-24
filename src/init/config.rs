@@ -1,10 +1,40 @@
 use clap::Parser;
 use gemini_engine::{
-    elements::view::{ColChar, Modifier},
-    elements3d::{Transform3D, Vec3D},
+    core::{ColChar, Modifier},
+    mesh3d::{Transform3D, Vec3D},
 };
+use glam::DQuat;
 
 use crate::MultiShader;
+
+fn parse_str_to_vec3d(s: &str) -> Result<Vec3D, String> {
+    let s = s.replace(' ', "");
+    let s = s.strip_prefix("Vec3D").unwrap_or(&s);
+    let s = s.trim_start_matches(['[', '(']);
+    let s = s.trim_end_matches([']', ')']);
+    let parts: Vec<&str> = s.split(',').collect();
+
+    if parts.len() != 3 {
+        return Err(String::from(
+            "Incorrect number of arguments, string must be in format x,y,z to be parsed correctly",
+        ));
+    }
+
+    let mut nums = Vec::new();
+
+    for part in parts {
+        nums.push(match part.parse::<f64>() {
+            Ok(val) => val,
+            Err(_) => {
+                return Err(String::from(
+                    "Could not parse part of argument, make sure it's a valid number",
+                ))
+            }
+        });
+    }
+
+    Ok(Vec3D::from_array([nums[0], nums[1], nums[2]]))
+}
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
@@ -21,15 +51,15 @@ pub struct Config {
     pub filepath: String,
 
     /// The initial translation of the model
-    #[arg(short, long, default_value_t = Vec3D::new(0.0,0.0,5.0))]
+    #[arg(short, long, default_value_t = Vec3D::new(0.0,0.0,5.0), value_parser = parse_str_to_vec3d)]
     pub translation: Vec3D,
 
     /// The initial rotation of the model
-    #[arg(short, long, default_value_t = Vec3D::new(-0.2,0.0,0.0))]
+    #[arg(short, long, default_value_t = Vec3D::new(-0.2,0.0,0.0), value_parser = parse_str_to_vec3d)]
     pub rotation: Vec3D,
 
     /// The animation of the model's rotation. This is how much the model will rotate every frame, in each axis
-    #[arg(short, long, default_value_t = Vec3D::new(0.0,0.05,0.0))]
+    #[arg(short, long, default_value_t = Vec3D::new(0.0,0.05,0.0), value_parser = parse_str_to_vec3d)]
     pub animation: Vec3D,
 
     /// The FOV of the viewport
@@ -71,7 +101,15 @@ impl Config {
     }
 
     #[must_use]
-    pub const fn get_transform(&self) -> Transform3D {
-        Transform3D::new_tr(self.translation, self.rotation)
+    pub fn get_transform(&self) -> Transform3D {
+        Transform3D::from_rotation_translation(
+            DQuat::from_euler(
+                glam::EulerRot::XYZ,
+                self.rotation.x,
+                self.rotation.y,
+                self.rotation.z,
+            ),
+            self.translation,
+        )
     }
 }

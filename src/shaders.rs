@@ -1,9 +1,9 @@
 use std::{fmt::Display, str::FromStr};
 
-use gemini_engine::elements::{
+use gemini_engine::{
     containers::CanShade,
-    view::{ColChar, Colour, Modifier},
-    Pixel,
+    core::{ColChar, Colour, Modifier},
+    primitives::Pixel,
 };
 
 #[derive(Debug, Clone, Copy)]

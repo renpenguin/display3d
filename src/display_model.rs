@@ -1,49 +1,57 @@
 use std::time::{Duration, Instant};
 
 use gemini_engine::{
-    elements::{
-        containers::CanShade,
-        view::{ScaleFitView, Wrapping},
-    },
-    elements3d::{DisplayMode, Mesh3D, Transform3D, Vec3D, Viewport},
-    gameloop::{sleep_fps, MainLoopRoot},
+    containers::{CanShade, PixelContainer}, core::CanDraw, gameloop::{sleep_fps, MainLoopRoot}, mesh3d::{Mesh3D, Transform3D, Vec3D}, view::ScaleFitView, view3d::{DisplayMode, Viewport}
 };
 
 mod debug_manager;
 pub use debug_manager::DebugManager;
 
-#[allow(dead_code)]
+use crate::Config;
+
 pub struct Root {
     canvas: ScaleFitView,
     viewport: Viewport,
-    model_animation: Vec3D,
-    models: Vec<Mesh3D>,
-    display_mode: DisplayMode,
+    model_animation: Transform3D,
     shader: Box<dyn CanShade>,
+    fps: f32,
     // Debug
     debug_manager: DebugManager,
 }
 
 impl Root {
-    pub fn new(
-        canvas: ScaleFitView,
-        fov: f64,
-        model_animation: Vec3D,
-        models: Vec<Mesh3D>,
-        display_mode: DisplayMode,
-        shader: impl CanShade + 'static,
-        debug_manager: DebugManager,
-    ) -> Self {
+    #[must_use]
+    pub fn new(config: &Config, models: Vec<Mesh3D>, display_mode: DisplayMode) -> Self {
+        let canvas = ScaleFitView::new(config.get_background_char()).with_empty_row_count(0);
+
         let viewport_center = canvas.intended_size() / 2;
+
+        let mut viewport = Viewport::new(
+            Transform3D::look_at_lh(
+                Vec3D::new(0.0, 0.0, 1.0),
+                Vec3D::ZERO,
+                Vec3D::new(0.0, 1.0, 0.0),
+            ),
+            config.fov,
+            viewport_center,
+        );
+        viewport.objects = models;
+        viewport.display_mode = display_mode;
+
+        let model_animation = Transform3D::from_euler(
+            glam::EulerRot::XYZ,
+            config.animation.x,
+            config.animation.y,
+            config.animation.z,
+        );
 
         Self {
             canvas,
-            viewport: Viewport::new(Transform3D::default(), fov, viewport_center),
-            models,
+            viewport,
             model_animation,
-            display_mode,
-            shader: Box::new(shader),
-            debug_manager,
+            shader: Box::new(config.shader),
+            fps: config.fps,
+            debug_manager: DebugManager::new(config.show_benchmark),
         }
     }
 }
@@ -51,26 +59,26 @@ impl Root {
 impl MainLoopRoot for Root {
     type InputDataType = ();
 
+    fn get_fps(&self) -> f32 {
+        self.fps
+    }
+
     fn frame(&mut self, _input_data: Option<Self::InputDataType>) {
-        for model in &mut self.models {
-            model.transform.rotation += self.model_animation;
+        for model in &mut self.viewport.objects {
+            model.transform = model.transform.mul_mat4(&self.model_animation);
         }
     }
 
     fn render_frame(&mut self) {
         // Auto-resize
-        self.viewport.origin = self.canvas.intended_size() / 2;
+        self.viewport.canvas_centre = self.canvas.intended_size() / 2;
         self.canvas.update();
 
         let now = Instant::now();
 
-        self.canvas.view.blit(
-            &self
-                .viewport
-                .render(self.models.iter().collect(), self.display_mode.clone())
-                .shade_with(&mut self.shader),
-            Wrapping::Ignore,
-        );
+        PixelContainer::from(&self.viewport)
+            .shade_with(&mut self.shader)
+            .draw_to(&mut self.canvas.view);
 
         self.debug_manager.log_blitting_since(now);
 

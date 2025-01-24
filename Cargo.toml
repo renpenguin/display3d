@@ -9,19 +9,20 @@ repository = "https://github.com/renpenguin/display3d"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = { version = "4.5.26", features = ["derive"] }
+clap = { version = "4.5.27", features = ["derive"] }
 ctrlc = "3.4.5"
-gemini-engine = "0.14.3"
+gemini-engine = "1.0.1"
+glam = "0.28.0"
 stl_io = "0.8.2"
-tobj = "4.0.2"
+tobj = "4.0.3"
 
 [lints.rust]
 unsafe_code = "forbid"
 
 [lints.clippy]
 enum_glob_use = "warn"
-pedantic = "warn"
-nursery = "warn"
+pedantic = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
 unwrap_used = "warn"
 
 cast_possible_truncation = "allow"

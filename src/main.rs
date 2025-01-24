@@ -1,8 +1,8 @@
 use clap::Parser;
 use gemini_engine::{
-    elements::view::ScaleFitView,
-    elements3d::{DisplayMode, Light, Vec3D},
     gameloop::MainLoopRoot,
+    mesh3d::Vec3D,
+    view3d::{DisplayMode, Light},
 };
 use std::process;
 
@@ -51,18 +51,14 @@ fn main() {
         .collect();
 
     let mut root = Root::new(
-        ScaleFitView::new(config.get_background_char()).with_empty_row_count(2),
-        config.fov,
-        config.animation,
+        &config,
         models,
         DisplayMode::Illuminated {
             lights: vec![
                 Light::new_ambient(0.6),
-                Light::new_directional(0.4, Vec3D::new(2.0, -1.0, -3.0)),
+                Light::new_directional(0.4, Vec3D::new(2.0, 1.0, 3.0)),
             ],
         },
-        config.shader,
-        DebugManager::new(config.show_benchmark),
     );
 
     if config.render_once {
@@ -72,5 +68,5 @@ fn main() {
 
     init::disable_cursor_blink();
 
-    root.main_loop(config.fps);
+    root.main_loop();
 }

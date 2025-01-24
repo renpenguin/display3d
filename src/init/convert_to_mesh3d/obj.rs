@@ -1,8 +1,8 @@
 use std::path::Path;
 
 use gemini_engine::{
-    elements::view::ColChar,
-    elements3d::{Face, Mesh3D, Transform3D, Vec3D},
+    core::ColChar,
+    mesh3d::{Mesh3D, Vec3D, Face},
 };
 use tobj::{Material, Model};
 
@@ -51,7 +51,6 @@ pub fn model_to_mesh3d(model: &Model, materials: &[Material]) -> Mesh3D {
                 let face_indices = mesh.indices[next_face..end]
                     .iter()
                     .map(|i| *i as usize)
-                    .rev()
                     .collect();
 
                 let material = get_material_as_col_char(materials, mesh.material_id);
@@ -62,7 +61,7 @@ pub fn model_to_mesh3d(model: &Model, materials: &[Material]) -> Mesh3D {
             .collect()
     };
 
-    Mesh3D::new(Transform3D::DEFAULT, vertices, faces)
+    Mesh3D::new(vertices, faces)
 }
 
 pub fn to_mesh3ds(filepath: &Path) -> Result<Vec<Mesh3D>, String> {
