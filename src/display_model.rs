@@ -1,7 +1,12 @@
 use std::time::{Duration, Instant};
 
 use gemini_engine::{
-    containers::{CanShade, PixelContainer}, core::CanDraw, gameloop::{sleep_fps, MainLoopRoot}, mesh3d::{Mesh3D, Transform3D, Vec3D}, view::ScaleFitView, view3d::{DisplayMode, Viewport}
+    containers::{CanShade, PixelContainer},
+    core::CanDraw,
+    gameloop::{sleep_fps, MainLoopRoot},
+    mesh3d::{Mesh3D, Transform3D, Vec3D},
+    view::ScaleFitView,
+    view3d::{DisplayMode, Viewport},
 };
 
 mod debug_manager;

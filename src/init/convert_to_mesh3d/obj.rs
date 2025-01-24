@@ -2,7 +2,7 @@ use std::path::Path;
 
 use gemini_engine::{
     core::ColChar,
-    mesh3d::{Mesh3D, Vec3D, Face},
+    mesh3d::{Face, Mesh3D, Vec3D},
 };
 use tobj::{Material, Model};
 
