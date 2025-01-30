@@ -184,9 +184,9 @@ dependencies = [
 
 [[package]]
 name = "gemini-engine"
-version = "1.0.1"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c8229e538e1261c8831834133f1217f821e01980d3a31c848911b06ef163630c"
+checksum = "b9c1fef701d306016644ca930aa3363e115992d0b50bdf97f041550241ae10fd"
 dependencies = [
  "glam",
  "terminal_size",

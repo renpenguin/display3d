@@ -62,13 +62,11 @@ impl Root {
 }
 
 impl MainLoopRoot for Root {
-    type InputDataType = ();
-
     fn get_fps(&self) -> f32 {
         self.fps
     }
 
-    fn frame(&mut self, _input_data: Option<Self::InputDataType>) {
+    fn frame(&mut self) {
         for model in &mut self.viewport.objects {
             model.transform = model.transform.mul_mat4(&self.model_animation);
         }
@@ -96,10 +94,10 @@ impl MainLoopRoot for Root {
         &self,
         fps: f32,
         elapsed: Duration,
-    ) -> (bool, Option<Self::InputDataType>) {
+    ) -> bool {
         // Hijack the sleep function to print elapsed times before falling back to default sleep function
         self.debug_manager.print_benchmark(fps, elapsed);
 
-        (sleep_fps(fps, Some(elapsed)), Some(()))
+        sleep_fps(fps, Some(elapsed))
     }
 }
