@@ -27,7 +27,8 @@ pub struct Root {
 impl Root {
     #[must_use]
     pub fn new(config: &Config, models: Vec<Mesh3D>, display_mode: DisplayMode) -> Self {
-        let canvas = ScaleFitView::new(config.get_background_char()).with_empty_row_count(0);
+        let canvas = ScaleFitView::new(config.get_background_char())
+            .with_empty_row_count(i64::from(config.show_benchmark));
 
         let viewport_center = canvas.intended_size() / 2;
 
