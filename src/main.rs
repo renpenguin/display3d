@@ -27,8 +27,8 @@ fn main() {
         }
     };
 
-    let models = match model_file.to_mesh3ds() {
-        Ok(models) => models,
+    let model = match model_file.to_mesh3d() {
+        Ok(model) => model,
         Err(e) => {
             eprintln!("An error occured while converting the parsed file: {e}");
             process::exit(1);
@@ -37,22 +37,15 @@ fn main() {
 
     println!(
         "Parsed model for a total of {} faces. Displaying...",
-        models.iter().map(|m| m.faces.len()).sum::<usize>()
+        model.faces.len()
     );
 
     // Apply global transform
-    let models = models
-        .into_iter()
-        .map(|m| {
-            let mut m = m;
-            m.transform *= -config.get_transform();
-            m
-        })
-        .collect();
+    let model = model.with_transform(-config.get_transform());
 
     let mut root = Root::new(
         &config,
-        models,
+        model,
         DisplayMode::Illuminated {
             lights: vec![
                 Light::new_ambient(0.6),

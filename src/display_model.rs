@@ -26,7 +26,7 @@ pub struct Root {
 
 impl Root {
     #[must_use]
-    pub fn new(config: &Config, models: Vec<Mesh3D>, display_mode: DisplayMode) -> Self {
+    pub fn new(config: &Config, model: Mesh3D, display_mode: DisplayMode) -> Self {
         let canvas = ScaleFitView::new(config.get_background_char())
             .with_empty_row_count(i64::from(config.show_benchmark));
 
@@ -41,7 +41,7 @@ impl Root {
             config.fov,
             viewport_center,
         );
-        viewport.objects = models;
+        viewport.objects.push(model);
         viewport.display_mode = display_mode;
 
         let model_animation = Transform3D::from_euler(
@@ -68,9 +68,8 @@ impl MainLoopRoot for Root {
     }
 
     fn frame(&mut self) {
-        for model in &mut self.viewport.objects {
-            model.transform = model.transform.mul_mat4(&self.model_animation);
-        }
+        let t = &mut self.viewport.objects[0].transform;
+        *t = t.mul_mat4(&self.model_animation);
     }
 
     fn render_frame(&mut self) {
