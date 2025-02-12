@@ -1,9 +1,8 @@
-use std::path::Path;
-
 use gemini_engine::{
     core::ColChar,
     mesh3d::{Face, Mesh3D, Vec3D},
 };
+use std::path::Path;
 use tobj::{Material, Model};
 
 const NO_MATERIAL_COLOUR: [f32; 3] = [1.0, 0.0, 1.0];
@@ -20,7 +19,7 @@ fn get_material_as_col_char(materials: &[Material], material_id: Option<usize>) 
     )
 }
 
-pub fn model_to_mesh3d(model: &Model, materials: &[Material]) -> Mesh3D {
+fn model_to_mesh3d(model: &Model, materials: &[Material]) -> Mesh3D {
     let mesh = &model.mesh;
 
     // let all_texcoords: Vec<Vector2<f64>> = mesh.texcoords.chunks(2).map(|k| Vector2::new(k[0] as f64, k[1] as f64)).collect();
@@ -64,6 +63,7 @@ pub fn model_to_mesh3d(model: &Model, materials: &[Material]) -> Mesh3D {
     Mesh3D::new(vertices, faces)
 }
 
+// TODO: return a single Mesh3D
 pub fn to_mesh3ds(filepath: &Path) -> Result<Vec<Mesh3D>, String> {
     let (models, materials) = get_obj_from_file(filepath)?;
 
@@ -73,7 +73,7 @@ pub fn to_mesh3ds(filepath: &Path) -> Result<Vec<Mesh3D>, String> {
         .collect())
 }
 
-pub fn get_obj_from_file(obj_filepath: &Path) -> Result<(Vec<Model>, Vec<Material>), String> {
+fn get_obj_from_file(obj_filepath: &Path) -> Result<(Vec<Model>, Vec<Material>), String> {
     let load_options = tobj::LoadOptions::default();
 
     let (models, materials) =
@@ -82,4 +82,24 @@ pub fn get_obj_from_file(obj_filepath: &Path) -> Result<(Vec<Model>, Vec<Materia
     let materials = materials.unwrap_or(vec![]);
 
     Ok((models, materials))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::to_mesh3ds;
+    use gemini_engine::core::Modifier;
+    use std::path::Path;
+
+    #[test]
+    fn load_obj() {
+        let models = to_mesh3ds(Path::new("resources/blahaj.obj"));
+        let Ok(models) = models else {
+            panic!("{}", models.unwrap_err())
+        };
+        assert_eq!(models.len(), 4); // One model per loaded colour
+        assert_eq!(
+            models[0].faces[0].fill_char.modifier,
+            Modifier::from_rgb(97, 158, 176)
+        ); // Verify successful .mtl file parse
+    }
 }

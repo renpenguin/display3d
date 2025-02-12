@@ -27,3 +27,18 @@ pub fn to_mesh3d(filepath: &Path) -> Result<Mesh3D, String> {
             .collect(),
     ))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::to_mesh3d;
+    use std::path::Path;
+
+    #[test]
+    fn load_stl() {
+        let model = to_mesh3d(Path::new("resources/shapes.stl"));
+        let Ok(model) = model else {
+            panic!("{}", model.unwrap_err())
+        };
+        assert_eq!(model.faces.len(), 1546);
+    }
+}
