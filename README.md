@@ -1,6 +1,7 @@
 <div align="center">
   <h1><b>display3d</b></h1>
   <img alt="Crates.io Version" src="https://img.shields.io/crates/v/display3d?style=for-the-badge">
+  <img alt="AUR Version" src="https://img.shields.io/aur/version/display3d?style=for-the-badge">
   <img src="https://img.shields.io/github/last-commit/renpenguin/display3d?style=for-the-badge">
   <img src="https://img.shields.io/github/repo-size/renpenguin/display3d?style=for-the-badge">
   <img src="https://img.shields.io/github/stars/renpenguin/display3d?color=e4b400&style=for-the-badge">
@@ -27,7 +28,7 @@ Please note that this form of rendering requires the terminal to support ANSI es
 
 ## Nix/NixOS
 
-If you use Nix, you can install display3d from [nixpkgs](https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/di/ddisplay3d/default.nix). You can install it as `pkgs.display3d`
+If you use Nix, you can install display3d from [nixpkgs](https://search.nixos.org/packages?channel=unstable&query=display3d). You can install it as `pkgs.display3d`, and even run it ephemerally with `nix run nixpkgs#display3d`!
 
 ## Cargo
 
@@ -41,4 +42,4 @@ Build the project with `cargo build --release`. The binary will be saved to `<pr
 
 # Example
 
-To run the example spinning shark, run `display3d blahaj.obj -t 0,0,5.5`. You can get the `blahaj.obj` and `blahaj.mtl` (for colours, should be stored together with `blahaj.obj`) files in [the resource directory](https://github.com/renpenguin/display3d/tree/master/resources) of this repository.
+To run the example spinning shark, run `display3d blahaj.obj -t 0,0,5.5`. You can get the `blahaj.obj` and `blahaj.mtl` (for colours, should be stored together with `blahaj.obj`) files in [the resources directory](https://github.com/renpenguin/display3d/tree/master/resources) of this repository.
