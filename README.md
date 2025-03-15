@@ -22,6 +22,8 @@ Please note that this form of rendering requires the terminal to support ANSI es
 
 # Installing
 
+[![Packaging status](https://repology.org/badge/vertical-allrepos/display3d.svg)](https://repology.org/project/display3d/versions)
+
 ## Arch Linux
 
 [display3d](https://aur.archlinux.org/packages/display3d/) is available as a package in the [AUR](https://aur.archlinux.org/). You can install it using your preferred AUR helper, e.g. `paru -S display3d`.
