@@ -90,7 +90,7 @@ impl MainLoopRoot for Root {
         self.debug_manager.log_rendering_since(now);
     }
 
-    fn sleep_and_get_input_data(&self, fps: f32, elapsed: Duration) -> bool {
+    fn sleep(&self, fps: f32, elapsed: Duration) -> bool {
         // Hijack the sleep function to print elapsed times before falling back to default sleep function
         self.debug_manager.print_benchmark(fps, elapsed);
 

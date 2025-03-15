@@ -2,7 +2,7 @@
 name = "display3d"
 description = "A tool to display 3d objects in the terminal"
 version = "0.2.1"
-edition = "2021"
+edition = "2024"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/renpenguin/display3d"
 
@@ -14,12 +14,12 @@ stl = ["dep:stl_io"]
 obj = ["dep:tobj"]
 
 [dependencies]
-clap = { version = "4.5.27", features = ["derive"] }
+clap = { version = "4.5.32", features = ["derive"] }
 ctrlc = "3.4.5"
-gemini-engine = {path = "../gemini"} # "1.1.1"
+gemini-engine = "1.2.0"
 glam = "0.28.0"
-stl_io = {version = "0.8.2", optional = true }
-tobj = {version = "4.0.3", optional = true }
+stl_io = { version = "0.8.5", optional = true }
+tobj = { version = "4.0.3", optional = true }
 
 [lints.rust]
 unsafe_code = "forbid"

@@ -56,7 +56,7 @@ impl<'a> ModelFile<'a> {
             ModelFileType::Obj => obj::to_mesh3d(self.filepath),
 
             #[cfg(feature = "stl")]
-            ModelFileType::Stl => Ok(stl::to_mesh3d(self.filepath)?),
+            ModelFileType::Stl => stl::to_mesh3d(self.filepath),
         }
     }
 }
