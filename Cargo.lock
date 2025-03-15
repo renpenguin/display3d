@@ -153,7 +153,7 @@ dependencies = [
 
 [[package]]
 name = "display3d"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "clap",
  "ctrlc",
@@ -184,13 +184,20 @@ dependencies = [
 
 [[package]]
 name = "gemini-engine"
-version = "1.1.1"
+version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "21cd18c03e7f529055c54faba3458102793da27d6bbd79736f2677949b5b5354"
+checksum = "faad6fb3981a53b8c683747ab63d880a18a89ecb04595e112aaa02ef29ffaeb9"
 dependencies = [
+ "gemini-mainloop",
  "glam",
  "terminal_size",
 ]
+
+[[package]]
+name = "gemini-mainloop"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b388dc570239ba51a264aad7044c763f8657f4f545a9bade772dc89462a83bb3"
 
 [[package]]
 name = "getrandom"
