@@ -30,7 +30,7 @@ fn main() {
     let model = match model_file.to_mesh3d() {
         Ok(model) => model,
         Err(e) => {
-            eprintln!("An error occured while converting the parsed file: {e}");
+            eprintln!("An error occurred while converting the parsed file: {e}");
             process::exit(1);
         }
     };
