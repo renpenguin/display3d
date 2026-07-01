@@ -33,6 +33,6 @@ impl DebugManager {
                 total_elapsed.as_micros(),
                 total_elapsed.as_micros() as f32 / Duration::from_secs_f32(1.0 / fps).as_micros() as f32 * 100.0
             );
-        };
+        }
     }
 }

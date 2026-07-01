@@ -53,7 +53,7 @@ fn extend_mesh3d_with_objmodel(mesh: &mut Mesh3D, obj_model: &ObjModel, material
                 get_material_as_col_char(materials, obj_model.material_id),
             ));
         }
-    };
+    }
 }
 
 pub fn to_mesh3d(filepath: &Path) -> Result<Mesh3D, String> {

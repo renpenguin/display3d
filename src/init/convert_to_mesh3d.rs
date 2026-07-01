@@ -38,10 +38,10 @@ pub struct ModelFile<'a> {
     filetype: ModelFileType,
 }
 
-impl<'a> ModelFile<'a> {
+impl ModelFile<'_> {
     /// ## Errors
     /// Will return an error if unable to determine a valid file extension based on the filepath
-    pub fn new(filepath: &str) -> Result<ModelFile, String> {
+    pub fn new(filepath: &str) -> Result<ModelFile<'_>, String> {
         let filepath = Path::new(filepath);
         let filetype = ModelFileType::from_filepath(filepath)?;
 
