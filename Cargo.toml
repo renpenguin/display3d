@@ -16,7 +16,7 @@ obj = ["dep:tobj"]
 [dependencies]
 clap = { version = "4.5.32", features = ["derive"] }
 ctrlc = "3.4.5"
-gemini-engine = "1.2.0"
+gemini-engine = "1.2.1"
 glam = "0.28.0"
 stl_io = { version = "0.8.5", optional = true }
 tobj = { version = "4.0.3", optional = true }
