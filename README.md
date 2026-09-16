@@ -32,6 +32,10 @@ Please note that this form of rendering requires the terminal to support ANSI es
 
 If you use Nix, you can install display3d from [nixpkgs](https://search.nixos.org/packages?channel=unstable&query=display3d). You can install it as `pkgs.display3d`, and even run it ephemerally with `nix run nixpkgs#display3d`!
 
+## Conda-Forge
+
+[display3d](https://prefix.dev/channels/conda-forge/packages/display3d) is available on conda-forge for Linux, macOS and Windows. You can install it using your preferred conda package manager, e.g. `pixi global install display3d`.
+
 ## Cargo
 
 Make sure you have [rust and cargo](https://www.rust-lang.org/tools/install) installed, then run `cargo install display3d`. This will download, compile and install the latest stable release of display3d. You can then simply run `display3d` to access it
